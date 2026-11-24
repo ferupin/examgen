@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "id": "flamboyants-revisao-historia-iii-trimestre-5ano-v1",
+  "title": "Revisão de História — III Trimestre — 5º Ano",
+  "subject": "História",
+  "grade": "5º Ano do Ensino Fundamental I",
+  "institution": "Colégio Flamboyants",
+  "description": "Revisão oficial da escola (9 questões de múltipla escolha) sobre patrimônio cultural material e imaterial, empatia e diversidade religiosa. Transcrita de fotografia.",
+  "sources": {
+    "providedMaterial": [
+      "Revisão de História — III Trimestre — 5º Ano, Colégio Flamboyants (fotografia fornecida pelo responsável)"
+    ],
+    "onlyProvidedMaterial": true,
+    "external": [],
+    "notes": "Transcrição feita a partir de foto: confira o texto das questões 6 e 9 com o papel. O gabarito foi deduzido pelo conteúdo e pelas orientações do responsável; confirme com a escola."
+  },
+  "parts": [
+    {
+      "id": "revisao",
+      "title": "Revisão oficial da escola",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "id": "r01",
+          "title": "Por que preservar?",
+          "context": "Quando caminhamos pelo centro antigo de uma cidade e vemos casarões, igrejas e praças muito antigos, estamos observando construções que guardam a história de quem viveu ali antes de nós.",
+          "prompt": "Por que é tão importante cuidar e preservar esses lugares históricos?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Porque eles pertencem apenas às famílias mais ricas da cidade."
+            },
+            {
+              "id": "b",
+              "text": "Porque ajudam a manter viva a memória coletiva e a entender o nosso passado."
+            },
+            {
+              "id": "c",
+              "text": "Porque servem apenas para escolher o nome das ruas e dos bairros novos."
+            },
+            {
+              "id": "d",
+              "text": "Porque foram construídos recentemente para atrair turistas."
+            }
+          ],
+          "answer": "b",
+          "explanation": "Os centros históricos guardam a história de quem viveu antes de nós. Preservá-los mantém viva a memória coletiva e nos ajuda a entender o passado."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r02",
+          "title": "Patrimônio material",
+          "context": "O Patrimônio Cultural Material é formado por tudo aquilo que podemos tocar e ver fisicamente, e que possui grande valor histórico ou artístico para um povo ou para toda a humanidade.",
+          "prompt": "Qual alternativa apresenta apenas exemplos desse tipo de patrimônio?",
+          "options": [
+            {
+              "id": "a",
+              "text": "As festas juninas, as cantigas de roda e as receitas de comidas típicas."
+            },
+            {
+              "id": "b",
+              "text": "As lendas folclóricas, as danças tradicionais e os idiomas indígenas."
+            },
+            {
+              "id": "c",
+              "text": "Os monumentos, os sítios arqueológicos, as esculturas e os prédios antigos."
+            },
+            {
+              "id": "d",
+              "text": "Apenas pequenos objetos guardados dentro de gavetas em museus."
+            }
+          ],
+          "answer": "c",
+          "explanation": "Patrimônio material é o que podemos ver e tocar: monumentos, sítios arqueológicos, esculturas e prédios antigos. Festas, cantigas, lendas, danças e idiomas fazem parte do patrimônio imaterial."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r03",
+          "title": "Patrimônio imaterial",
+          "context": "O Patrimônio Cultural Imaterial é formado por práticas e expressões que não podemos pegar com as mãos, mas que fazem parte da identidade de um povo.",
+          "prompt": "Assinale a alternativa CORRETA sobre esse tipo de patrimônio:",
+          "options": [
+            {
+              "id": "a",
+              "text": "É composto por saberes, ritmos, danças e celebrações transmitidos entre gerações."
+            },
+            {
+              "id": "b",
+              "text": "É formado apenas por prédios antigos, estátuas de praças e objetos de museus."
+            },
+            {
+              "id": "c",
+              "text": "Não precisa ser valorizado pela população, pois muda completamente todos os dias."
+            },
+            {
+              "id": "d",
+              "text": "Existe apenas em livros de história e não faz mais parte do dia a dia das pessoas."
+            }
+          ],
+          "answer": "a",
+          "explanation": "O patrimônio imaterial reúne saberes, ritmos, danças e celebrações que passam de geração em geração e continuam vivos no dia a dia."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r04",
+          "title": "Os mais velhos e a cultura",
+          "context": "Os idosos e os anciãos de uma comunidade têm um papel muito especial na preservação da cultura. Eles guardam lembranças, costumes e ensinamentos que ajudam os mais jovens a conhecerem suas raízes.",
+          "prompt": "De acordo com essa ideia, qual elemento faz parte do patrimônio imaterial transmitido pelos mais velhos?",
+          "options": [
+            {
+              "id": "a",
+              "text": "As histórias, memórias e narrativas contadas pelos nossos antepassados."
+            },
+            {
+              "id": "b",
+              "text": "Os computadores, celulares e novas tecnologias criadas hoje em dia."
+            },
+            {
+              "id": "c",
+              "text": "Apenas os prédios de pedra e as estátuas das praças públicas."
+            },
+            {
+              "id": "d",
+              "text": "Os mapas digitais usados para viajar de uma cidade para outra."
+            }
+          ],
+          "answer": "a",
+          "explanation": "Os mais velhos guardam e transmitem histórias, memórias e narrativas. Isso é patrimônio imaterial: não podemos tocar, mas faz parte da identidade da comunidade."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r05",
+          "title": "Empatia",
+          "context": "Para viver bem em sociedade, precisamos praticar a empatia no dia a dia, seja na escola, em casa ou na rua.",
+          "prompt": "Qual atitude demonstra, na prática, o verdadeiro significado da palavra \"empatia\"?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Ignorar quando um colega está triste para não se envolver no problema."
+            },
+            {
+              "id": "b",
+              "text": "Tentar se colocar no lugar do outro e compreender o que ele está sentindo."
+            },
+            {
+              "id": "c",
+              "text": "Querer que todos os colegas pensem e ajam exatamente do mesmo jeito."
+            },
+            {
+              "id": "d",
+              "text": "Julgar as escolhas das outras pessoas sem ouvir o lado delas."
+            }
+          ],
+          "answer": "b",
+          "explanation": "Empatia é a capacidade de tentar compreender o que outra pessoa sente, colocando-se no lugar dela."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r06",
+          "title": "Diversidade religiosa",
+          "context": "O Brasil é formado por pessoas de várias origens e crenças diferentes. Existem religiões cristãs, de matriz africana, indígenas, orientais e também pessoas que escolhem não seguir nenhuma religião.",
+          "prompt": "O que a Constituição Brasileira garante sobre esse assunto?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Que existe apenas uma religião oficial que todos os brasileiros devem seguir."
+            },
+            {
+              "id": "b",
+              "text": "Que as pessoas são proibidas de demonstrar sua fé em locais públicos para evitar o preconceito."
+            },
+            {
+              "id": "c",
+              "text": "Que todas as crenças têm liberdade de culto e merecem ter seus templos respeitados."
+            },
+            {
+              "id": "d",
+              "text": "Que somente as religiões mais antigas têm o direito de ter seus templos respeitados."
+            }
+          ],
+          "answer": "c",
+          "explanation": "A Constituição Brasileira garante a liberdade de crença e de culto. Todas as crenças merecem respeito, e isso ajuda a evitar o preconceito."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r07",
+          "title": "Arte Kusiwa",
+          "context": "Os povos indígenas do Brasil possuem tradições riquíssimas. Um grande exemplo é a arte Kusiwa, criada pelo povo Wajãpi, que usa tintas naturais para fazer desenhos no corpo e em objetos, expressando sua forma de ver o mundo.",
+          "prompt": "Por que essa arte é considerada um Patrimônio Cultural Imaterial da Humanidade?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Porque é uma expressão artística tradicional que transmite os conhecimentos e sentimentos de um povo."
+            },
+            {
+              "id": "b",
+              "text": "Porque os indígenas deixaram de fazer essas pinturas há muitos séculos."
+            },
+            {
+              "id": "c",
+              "text": "Porque basta tirar fotos das pinturas para que a cultura nunca desapareça."
+            },
+            {
+              "id": "d",
+              "text": "Porque os patrimônios imateriais nunca mudam e não possuem nenhuma tradição."
+            }
+          ],
+          "answer": "a",
+          "explanation": "A arte Kusiwa, do povo Wajãpi, é uma expressão tradicional que transmite os conhecimentos e os sentimentos de um povo. Por isso é reconhecida como Patrimônio Cultural Imaterial da Humanidade."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r08",
+          "title": "Bens imateriais do Brasil",
+          "context": "Além dos monumentos e das construções antigas, a cultura de um país também vive nas ruas, nas praças e nas reuniões das comunidades.",
+          "prompt": "Segundo a Constituição e a Unesco, quais itens abaixo são exemplos de bens imateriais do Brasil?",
+          "options": [
+            {
+              "id": "a",
+              "text": "As florestas naturais, os rios e as montanhas preservadas."
+            },
+            {
+              "id": "b",
+              "text": "Os ritmos musicais, as danças típicas, os modos de fazer e as celebrações coletivas."
+            },
+            {
+              "id": "c",
+              "text": "Os castelos antigos, as pontes de ferro e os museus históricos."
+            },
+            {
+              "id": "d",
+              "text": "Qualquer construção feita há mais de dez anos nas grandes cidades."
+            }
+          ],
+          "answer": "b",
+          "explanation": "Ritmos, danças, modos de fazer e celebrações coletivas são práticas vivas das comunidades: bens imateriais."
+        },
+        {
+          "type": "multiple_choice",
+          "id": "r09",
+          "title": "Samba de Roda do Recôncavo Baiano",
+          "context": "O Samba de Roda do Recôncavo Baiano reúne música, poesia e dança em uma roda animada, onde as pessoas batem palmas e cantam juntas.",
+          "prompt": "Essa manifestação é reconhecida como Patrimônio Cultural Imaterial da Humanidade porque representa uma:",
+          "options": [
+            {
+              "id": "a",
+              "text": "obra literária escrita em livros antigos."
+            },
+            {
+              "id": "b",
+              "text": "festa comum que acontece apenas uma vez por século."
+            },
+            {
+              "id": "c",
+              "text": "dança e expressão cultural tradicional passada de geração em geração."
+            },
+            {
+              "id": "d",
+              "text": "construção histórica feita de pedra e barro."
+            }
+          ],
+          "answer": "c",
+          "explanation": "O Samba de Roda do Recôncavo Baiano é uma expressão cultural tradicional, com música, poesia e dança, transmitida entre gerações."
+        }
+      ]
+    }
+  ]
+}
