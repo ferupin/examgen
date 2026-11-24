@@ -1,5 +1,6 @@
 import { brand } from "./brand";
 import { validateExam, type Exam } from "./schema";
+import { CreatorSchema, defaultFields, type CreatorFields } from "./prompt";
 import type { Answers, Grades } from "./score";
 
 /**
@@ -139,4 +140,26 @@ export function upsertHistory(examId: string, entry: HistoryEntry): boolean {
   h.push(entry);
   h.sort((a, b) => a.date.localeCompare(b.date));
   return write(historyKey(examId), h.slice(-HISTORY_LIMIT));
+}
+
+// ---------------------------------------------------------------- criar com IA
+const CREATOR_KEY = `${P}.creator`;
+
+/** Campos do formulário "Criar com IA". Sempre devolve um objeto válido. */
+export function loadCreator(): CreatorFields {
+  const raw = read<unknown>(CREATOR_KEY, null);
+  const r = CreatorSchema.safeParse(raw ?? {});
+  return r.success ? r.data : defaultFields;
+}
+
+export function saveCreator(fields: CreatorFields): boolean {
+  return write(CREATOR_KEY, fields);
+}
+
+export function clearCreator(): void {
+  try {
+    window.localStorage.removeItem(CREATOR_KEY);
+  } catch {
+    /* ignora */
+  }
 }

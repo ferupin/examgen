@@ -7,9 +7,9 @@ Sem backend e sem banco de dados: o banco é um arquivo que você guarda no driv
 
 ## Como funciona
 
-1. **Criar:** a tela *Criar com IA* entrega um pedido pronto para colar em uma IA (ChatGPT, Claude, Gemini…). Você informa o conteúdo e a IA devolve um `.json` no formato do app.
+1. **Criar:** a tela *Criar com IA* tem campos (aluno, escola, disciplina, assuntos, quantidades, nível). O pedido para a IA é montado enquanto você digita e os campos ficam salvos no navegador. O pedido já explica à IA que você só enviará imagens (ou texto) e ela devolve um `.json` no formato do app.
 2. **Importar:** a tela *Importar* valida o arquivo (com mensagens de erro em português) e guarda na biblioteca do navegador. Aceita arquivo, arrastar e soltar, ou texto colado (inclusive com cerca ```` ```json ````).
-3. **Resolver:** prova em uma página só, com progresso, salvamento automático, retomada ao reabrir e tema claro (creme) ou escuro (ardósia suave).
+3. **Resolver:** prova em uma página só, com progresso, salvamento automático, retomada ao reabrir e tema claro (creme, padrão) ou escuro (ardósia suave), só alternando entre os dois, sem seguir o sistema.
 4. **Corrigir:** objetivas são corrigidas automaticamente, com explicação comentada. Discursivas têm **correção assistida**: modelo de resposta, critérios, rubrica 0–3 e comentário. A **nota final só aparece quando não há discursivas pendentes**.
 5. **Guardar:** cada banco pode ser baixado de volta como JSON. O histórico das últimas 30 tentativas pode ser exportado.
 

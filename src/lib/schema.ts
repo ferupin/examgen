@@ -243,7 +243,39 @@ export function validateExam(raw: unknown): ParseResult {
       }
     }),
   );
+  warnings.push(...balanceWarnings(exam));
   return { ok: true, exam, warnings };
+}
+
+/** Bancos feitos por IA costumam concentrar o gabarito em "A" e deixar a correta mais longa. */
+function balanceWarnings(exam: Exam): string[] {
+  const mcs = exam.parts
+    .flatMap((p) => p.questions)
+    .filter((q): q is McQuestion => q.type === "multiple_choice");
+  if (mcs.length < 8) return [];
+  const out: string[] = [];
+  const count: Record<string, number> = {};
+  let longest = 0;
+  for (const q of mcs) {
+    const idx = q.options.findIndex((o) => o.id === q.answer);
+    const letter = String.fromCharCode(97 + idx);
+    count[letter] = (count[letter] ?? 0) + 1;
+    const len = (id: string) => q.options.find((o) => o.id === id)?.text.length ?? 0;
+    const correct = len(q.answer);
+    if (q.options.every((o) => o.id === q.answer || len(o.id) < correct)) longest++;
+  }
+  const [top, n] = Object.entries(count).sort((a, b) => b[1] - a[1])[0];
+  if (n / mcs.length > 0.4) {
+    out.push(
+      `A alternativa "${top.toUpperCase()}" é a correta em ${n} de ${mcs.length} questões (${Math.round((100 * n) / mcs.length)}%). Peça à IA para distribuir melhor o gabarito.`,
+    );
+  }
+  if (longest / mcs.length > 0.6) {
+    out.push(
+      `A alternativa correta é a mais longa em ${longest} de ${mcs.length} questões. Isso entrega a resposta; peça à IA para equilibrar o tamanho das alternativas.`,
+    );
+  }
+  return out;
 }
 
 export function parseExamJson(text: string): ParseResult {

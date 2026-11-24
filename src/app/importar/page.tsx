@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 import { parseExamJson, type Exam } from "@/lib/schema";
 import { allQuestions } from "@/lib/score";
 import { saveToLibrary } from "@/lib/storage";
+import { buildFixPrompt } from "@/lib/prompt";
+import { CopyButton } from "@/components/CopyButton";
 
 type Parsed =
   | { kind: "none" }
@@ -108,9 +110,11 @@ export default function ImportPage() {
           {parsed.errors.length > 25 && (
             <p>…e mais {parsed.errors.length - 25} problema(s).</p>
           )}
-          <p>
-            Dica: copie estas mensagens e peça para a IA corrigir o JSON.
-          </p>
+          <p>Dica: copie o pedido de correção e cole na mesma conversa da IA.</p>
+          <CopyButton
+            text={buildFixPrompt(parsed.errors.slice(0, 25))}
+            label="Copiar pedido de correção para a IA"
+          />
         </div>
       )}
 

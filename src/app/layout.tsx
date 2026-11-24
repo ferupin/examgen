@@ -12,18 +12,15 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ebe3d1" },
-    { media: "(prefers-color-scheme: dark)", color: "#15171b" },
-  ],
+  themeColor: "#ebe3d1",
 };
 
 /** Aplica o tema salvo antes da primeira pintura (evita "piscar"). */
-const themeScript = `try{var t=localStorage.getItem("${brand.storagePrefix}.theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
+const themeScript = `try{if(localStorage.getItem("${brand.storagePrefix}.theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}`;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
