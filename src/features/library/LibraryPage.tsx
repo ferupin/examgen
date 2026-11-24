@@ -1,0 +1,105 @@
+"use client";
+
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { brand } from "@/config";
+import type { Exam } from "@/core/schema";
+import { countAnswered } from "@/core/score";
+import { exampleExams } from "@/exams";
+import { t } from "@/i18n";
+import { useConfirm } from "@/components/ui/ConfirmProvider";
+import { useToast } from "@/components/ui/ToastProvider";
+import { loadAttempt, loadHistory } from "@/storage/attempts";
+import { downloadJson } from "@/storage/download";
+import { loadLibrary, removeFromLibrary } from "@/storage/library";
+import { ExamCard, type ExamStatus } from "./ExamCard";
+
+function readStatus(exams: Exam[]): Record<string, ExamStatus> {
+  const st: Record<string, ExamStatus> = {};
+  for (const e of exams) {
+    const a = loadAttempt(e.id);
+    const last = loadHistory(e.id).at(-1);
+    st[e.id] = {
+      answered: countAnswered(e, a.answers),
+      finished: a.finished,
+      last: last && {
+        percent: last.percent,
+        final: last.final,
+        objectivePercent: last.objectivePercent,
+      },
+    };
+  }
+  return st;
+}
+
+const downloadExam = (e: Exam) => downloadJson(`${e.id}.json`, e);
+
+export function LibraryPage() {
+  const [mine, setMine] = useState<Exam[]>([]);
+  const [status, setStatus] = useState<Record<string, ExamStatus>>({});
+  const [ready, setReady] = useState(false);
+  const confirm = useConfirm();
+  const toast = useToast();
+
+  const refresh = useCallback(() => {
+    const lib = loadLibrary();
+    setMine(lib);
+    setStatus(readStatus([...lib, ...exampleExams]));
+    setReady(true);
+  }, []);
+  useEffect(refresh, [refresh]);
+
+  const remove = useCallback(
+    async (e: Exam) => {
+      const ok = await confirm({
+        title: t("modal.removeTitle"),
+        body: t("library.confirmRemove", { title: e.title }),
+        confirmLabel: t("modal.removeConfirm"),
+        danger: true,
+      });
+      if (!ok) return;
+      removeFromLibrary(e.id);
+      toast("success", t("toast.removed"));
+      refresh();
+    },
+    [confirm, toast, refresh],
+  );
+
+  return (
+    <div className="sheet">
+      <h1 className="page-title">{t("library.title")}</h1>
+      <p className="lead">
+        {brand.tagline} {t("library.lead")}
+      </p>
+
+      <h2 className="section-title">{t("library.mine")}</h2>
+      {!ready ? (
+        <p>{t("common.loading")}</p>
+      ) : mine.length === 0 ? (
+        <div className="callout">
+          {t("library.empty")} <Link href="/importar">{t("library.emptyImport")}</Link>{" "}
+          {t("library.emptyOr")} <Link href="/criar">{t("library.emptyCreate")}</Link>.
+        </div>
+      ) : (
+        <div className="grid gap-3.5 sm:grid-cols-2">
+          {mine.map((e) => (
+            <ExamCard
+              key={e.id}
+              exam={e}
+              status={status[e.id]}
+              onRemove={remove}
+              onDownload={downloadExam}
+            />
+          ))}
+        </div>
+      )}
+
+      <h2 className="section-title">{t("library.examples")}</h2>
+      <div className="grid gap-3.5 sm:grid-cols-2">
+        {exampleExams.map((e) => (
+          <ExamCard key={e.id} exam={e} status={status[e.id]} onDownload={downloadExam} />
+        ))}
+      </div>
+    </div>
+  );
+}

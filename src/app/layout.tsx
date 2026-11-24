@@ -1,7 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { brand } from "@/lib/brand";
-import { Header } from "@/components/Header";
+import "@fontsource/atkinson-hyperlegible/400.css";
+import "@fontsource/atkinson-hyperlegible/700.css";
+import { brand } from "@/config";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,21 +19,15 @@ export const viewport: Viewport = {
   themeColor: "#ebe3d1",
 };
 
-/** Aplica o tema salvo antes da primeira pintura (evita "piscar"). */
-const themeScript = `try{if(localStorage.getItem("${brand.storagePrefix}.theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}`;
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR" data-theme="light" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="pt-BR" suppressHydrationWarning>
       <body>
-        <Header />
-        <main className="shell">{children}</main>
-        <footer className="site-footer">
-          Seus dados ficam só neste navegador. Nada é enviado para a internet.
-        </footer>
+        <Providers>
+          <Header />
+          <main className="mx-auto max-w-[920px] px-0 pb-14 pt-1 sm:px-4">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
