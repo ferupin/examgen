@@ -2,7 +2,7 @@
 
 import { Download, Eraser, FilePlus2 } from "lucide-react";
 import Link from "next/link";
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import {
   limits,
   maxLength,
@@ -18,18 +18,20 @@ import {
   resetSimulado,
   type CreatorFields,
 } from "@/core/prompt";
+import { joinTags, parseTags } from "@/core/tags";
 import { t } from "@/i18n";
 import { Field } from "@/components/ui/Field";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { useConfirm } from "@/components/ui/ConfirmProvider";
 import { Segmented } from "@/components/ui/Segmented";
+import { TagInput } from "@/components/ui/TagInput";
 import { useToast } from "@/components/ui/ToastProvider";
 import { clearCreator, loadCreator, saveCreator } from "@/storage/creator";
 import { downloadJson } from "@/storage/download";
 import { LlmLinks } from "./LlmLinks";
 
 type Key = keyof CreatorFields;
-type Save = "idle" | "ok" | "fail";
+const TAG_LIMITS = { max: 20, maxLength: 60 };
 
 function message(code: FieldCode | undefined, key: Key): string | undefined {
   if (!code) return undefined;
@@ -42,10 +44,8 @@ function message(code: FieldCode | undefined, key: Key): string | undefined {
 export function CreatorPage() {
   const [f, setF] = useState<CreatorFields>(defaultFields);
   const [ready, setReady] = useState(false);
-  const [save, setSave] = useState<Save>("idle");
   // Campos que a pessoa já visitou (ou todos, depois de tentar copiar): só estes mostram erro.
   const [shown, setShown] = useState<Set<Key>>(new Set());
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const confirm = useConfirm();
   const toast = useToast();
 
@@ -54,15 +54,24 @@ export function CreatorPage() {
     setReady(true);
   }, []);
 
-  // Grava depois de uma pausa na digitação, só depois de carregar (não apaga o que já estava salvo).
+  // Grava pouco depois de parar de digitar (só depois de carregar, para não apagar
+  // o que já estava salvo). O aviso discreto "salvo" aparece um pouco depois,
+  // quando a pessoa parou de mexer, e se apaga sozinho com fade.
   useEffect(() => {
     if (!ready) return;
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => setSave(saveCreator(f) ? "ok" : "fail"), 400);
+    let notifyTimer: ReturnType<typeof setTimeout> | undefined;
+    const saveTimer = setTimeout(() => {
+      if (saveCreator(f)) {
+        notifyTimer = setTimeout(() => toast("saved", t("creator.saved"), { key: "saved" }), 1200);
+      } else {
+        toast("error", t("creator.saveFail"), { key: "save-fail" });
+      }
+    }, 400);
     return () => {
-      if (timer.current) clearTimeout(timer.current);
+      clearTimeout(saveTimer);
+      clearTimeout(notifyTimer);
     };
-  }, [f, ready]);
+  }, [f, ready, toast]);
 
   const errors: CreatorErrors = useMemo(() => validateCreator(f), [f]);
   const err = (k: Key) => (shown.has(k) ? message(errors[k], k) : undefined);
@@ -117,6 +126,7 @@ export function CreatorPage() {
     toast("info", t("toast.cleared"));
   }
 
+  const topics = useMemo(() => parseTags(f.topics), [f.topics]);
   const skeleton = useMemo(() => buildSkeleton(f), [f]);
   const ph = (k: MessageKeyLike) => t(k);
 
@@ -141,7 +151,19 @@ export function CreatorPage() {
             <Field label={t("creator.city")}>
               {(a) => <input className="input" type="text" placeholder={ph("creator.cityPh")} {...a} {...text("city", maxLength.city)} />}
             </Field>
-            <Field label={t("creator.curriculum")}>
+            <Field
+              label={t("creator.curriculum")}
+              help={{
+                label: t("creator.curriculumHelpLabel"),
+                body: (
+                  <div className="grid gap-2">
+                    <p>{t("creator.curriculumHelpWhat")}</p>
+                    <p>{t("creator.curriculumHelpNetworks")}</p>
+                    <p>{t("creator.curriculumHelpFind")}</p>
+                  </div>
+                ),
+              }}
+            >
               {(a) => <input className="input" type="text" placeholder={ph("creator.curriculumPh")} {...a} {...text("curriculum", maxLength.curriculum)} />}
             </Field>
             <Field label={t("creator.notes")} hint={t("common.optional")} className="sm:col-span-2">
@@ -160,7 +182,19 @@ export function CreatorPage() {
               {(a) => <input className="input" type="text" placeholder={ph("creator.examTitlePh")} {...a} {...text("title", maxLength.title)} />}
             </Field>
             <Field label={t("creator.topics")} hint={t("creator.topicsHint")} className="sm:col-span-2">
-              {(a) => <textarea className="input min-h-24" placeholder={ph("creator.topicsPh")} {...a} {...text("topics", maxLength.topics)} />}
+              {(a) => (
+                <TagInput
+                  control={a}
+                  tags={topics}
+                  onChange={(next) => set("topics", joinTags(next))}
+                  limits={TAG_LIMITS}
+                  placeholder={ph("creator.topicsPh")}
+                  addLabel={t("creator.topicsAdd")}
+                  listLabel={t("creator.topicsList")}
+                  removeLabel={(tag) => t("creator.topicsRemove", { tag })}
+                  countLabel={t("creator.topicsCount", { n: topics.length, max: TAG_LIMITS.max })}
+                />
+              )}
             </Field>
             <Field label={t("creator.materials")} hint={t("creator.materialsHint")} className="sm:col-span-2">
               {(a) => <textarea className="input min-h-[70px]" placeholder={ph("creator.materialsPh")} {...a} {...text("materials", maxLength.materials)} />}
@@ -189,17 +223,27 @@ export function CreatorPage() {
               {(a) => <input className="input" type="text" placeholder={ph("creator.partsPh")} {...a} {...digits("partsCount")} />}
             </Field>
             <div className="grid content-start gap-1.5">
-              <span className="text-sm font-bold">{t("creator.level")}</span>
+              <span className="flex min-h-7 items-center text-sm font-bold">{t("creator.level")}</span>
               <Segmented
                 label={t("creator.level")}
                 value={f.difficulty}
+                equal
                 options={[
-                  { value: "revisao", label: t("creator.levelReview") },
-                  { value: "medio", label: t("creator.levelMedium") },
-                  { value: "desafio", label: t("creator.levelChallenge") },
+                  { value: "revisao", label: t("creator.levelReview"), tone: "ok" },
+                  { value: "medio", label: t("creator.levelMedium"), tone: "warm" },
+                  { value: "desafio", label: t("creator.levelChallenge"), tone: "bad" },
                 ]}
                 onChange={(v) => set("difficulty", v)}
               />
+              <p className="text-xs text-muted" aria-live="polite">
+                {t(
+                  f.difficulty === "revisao"
+                    ? "creator.levelReviewHint"
+                    : f.difficulty === "medio"
+                      ? "creator.levelMediumHint"
+                      : "creator.levelChallengeHint",
+                )}
+              </p>
             </div>
             <Field label={t("creator.extras")} hint={t("common.optional")} className="sm:col-span-2">
               {(a) => <textarea className="input min-h-[70px]" placeholder={ph("creator.extrasPh")} {...a} {...text("extraStyle", maxLength.extraStyle)} />}
@@ -262,10 +306,6 @@ export function CreatorPage() {
           <Eraser size={18} aria-hidden="true" />
           {t("creator.clearAll")}
         </button>
-        <span className="text-[13px] text-muted" aria-live="polite">
-          {save === "ok" && t("creator.saved")}
-          {save === "fail" && t("creator.saveFail")}
-        </span>
       </div>
 
       <ol className="mt-5 grid gap-3 sm:grid-cols-3">

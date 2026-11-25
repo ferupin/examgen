@@ -1,6 +1,6 @@
 "use client";
 
-import { History, Library, Sparkles, Upload, type LucideIcon } from "lucide-react";
+import { Library, Sparkles, Upload, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { t, type MessageKey } from "@/i18n";
@@ -11,7 +11,6 @@ const LINKS: { href: string; key: MessageKey; Icon: LucideIcon }[] = [
   { href: "/", key: "nav.library", Icon: Library },
   { href: "/importar", key: "nav.import", Icon: Upload },
   { href: "/criar", key: "nav.create", Icon: Sparkles },
-  { href: "/versoes", key: "nav.versions", Icon: History },
 ];
 
 export function Header() {

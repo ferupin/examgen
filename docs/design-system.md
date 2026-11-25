@@ -25,11 +25,15 @@ Correto/errado têm texto e ícone. Campo inválido tem borda vermelha **e** men
 | Ligar/desligar | Interruptor (`role="switch"`), caso do tema |
 | Uma entre poucas | Segmentado (rádio nativo; uma parada de Tab, setas dentro) |
 | Confirmar ação destrutiva ou com perda | Modal nativo `<dialog>` |
-| Resultado de uma ação | Toast (sobrepõe, nunca empurra o layout, some sozinho) |
+| Resultado de uma ação | Toast no topo (sobrepõe, nunca empurra o layout, entra e sai com fade). O tipo `saved` é o aviso discreto de "salvo no navegador" |
+| Explicar um termo | Ícone "?" (`HelpTip`): abre com mouse, foco ou toque; Esc fecha |
+| Lista de itens curtos | Etiquetas removíveis (`TagInput`): Enter, vírgula ou botão adicionam |
+| Nível/dificuldade | `Segmented` com `tone` (verde, âmbar, vermelho) e sempre com texto |
 | Copiar | Botão com ícone que vira "ok" por 2 s |
 | Link que sai do app | Ícone de seta, `target="_blank"`, `noopener`, texto "(abre em outra aba)" para leitor de tela |
 
 ## Campos
+Campo preenchido tem fundo mais claro e uma barra de destaque à esquerda (`.input:not(:placeholder-shown)`), por isso todo campo precisa de `placeholder`.
 Obrigatório tem `*` e `aria-required`. Erro aparece depois que a pessoa sai do campo, ou em todos ao tentar copiar. Números aceitam só dígitos e uma faixa (`src/core/creator-validation.ts`). Placeholders são exemplos neutros, nunca dados de pessoas.
 
 ## Layout e movimento

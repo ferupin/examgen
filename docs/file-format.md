@@ -4,7 +4,7 @@ Versão do formato: **1** (`"schemaVersion": 1`). Validado por Zod em `src/core/
 
 ## Promessa
 
-Um arquivo válido na versão 1 continua válido. Mudanças futuras são **aditivas** (campos opcionais novos) ou ganham uma nova versão (`schemaVersion: 2`), com migração das versões antigas. Os bancos de `src/exams/data` servem de fixtures: o teste `src/exams/exams.test.ts` e `src/core/schema.test.ts` os carregam a cada execução.
+Um arquivo válido na versão 1 continua válido. Mudanças futuras são **aditivas** (campos opcionais novos) ou ganham uma nova versão (`schemaVersion: 2`), com migração das versões antigas. Os bancos de `src/exams/catalog` servem de fixtures: o teste `src/exams/exams.test.ts` e `src/core/schema.test.ts` os carregam a cada execução.
 
 ## Estrutura
 

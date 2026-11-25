@@ -175,6 +175,12 @@
   .input[aria-invalid="true"] {
     @apply border-2 border-bad bg-bad-soft/40;
   }
+  /* Campo preenchido: fundo mais claro que o vazio e uma barra de destaque,
+     para a pessoa ver de relance o que já foi digitado. Exige placeholder. */
+  .input:not(:placeholder-shown):not([aria-invalid="true"]) {
+    @apply border-line-strong bg-paper;
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
   textarea.input {
     @apply min-h-28 resize-y;
   }
@@ -184,6 +190,18 @@
 
   .card {
     @apply flex flex-col gap-2.5 rounded-2xl border border-line bg-paper-2 p-4 sm:p-[18px];
+  }
+  details.disclosure > summary {
+    @apply flex min-h-14 list-none items-center gap-3 rounded-2xl border border-line bg-paper-2 px-4 py-3 transition-colors hover:border-accent;
+  }
+  details.disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+  details.disclosure[open] > summary {
+    @apply rounded-b-none border-b-transparent;
+  }
+  details.disclosure[open] > summary .chevron {
+    transform: rotate(180deg);
   }
   .card-meta {
     @apply text-sm text-muted;
@@ -202,6 +220,29 @@
   }
   .pick > input:focus-visible + span {
     @apply outline-3 outline-offset-2 outline-accent;
+  }
+
+  .pick-fill > span {
+    @apply w-full text-center leading-tight;
+  }
+  /* Cores com significado (dificuldade): sempre acompanhadas de texto. */
+  .pick-ok > span {
+    @apply border-ok-line bg-ok-soft text-ok;
+  }
+  .pick-ok > input:checked + span {
+    @apply border-ok bg-ok text-paper;
+  }
+  .pick-warm > span {
+    @apply border-warm/50 bg-warm-soft text-warm;
+  }
+  .pick-warm > input:checked + span {
+    @apply border-warm bg-warm text-paper;
+  }
+  .pick-bad > span {
+    @apply border-bad-line bg-bad-soft text-bad;
+  }
+  .pick-bad > input:checked + span {
+    @apply border-bad bg-bad text-paper;
   }
 
   /* Prova */
@@ -262,14 +303,33 @@ html[data-modal-open] main {
   }
 }
 
+/* Avisos: entram deslizando do topo e saem com fade. */
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(-10px);
   }
+}
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.fade-in {
+  animation: fade-in 0.2s ease-out;
 }
 .toast-in {
   animation: toast-in 0.22s ease-out;
+}
+.toast-out {
+  animation: toast-out 0.22s ease-in forwards;
 }
 
 /* ------------------------------------------------------------ impressão */

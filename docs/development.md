@@ -23,7 +23,7 @@ Antes de entregar uma fase rode `typecheck`, `test` e `build`.
 src/
   app/          rotas finas, layout, globals.css (tokens)
   core/         TypeScript puro: schema, score, prompt, validação do formulário
-  exams/        bancos de exemplo (data/*.json) + registro (index.ts)
+  exams/        catalog/ (10 questões por matéria, 1º ao 9º ano), school/ (revisões da escola) e o registro (index.ts)
   storage/      localStorage com Zod, download de JSON
   i18n/         dicionário pt tipado + t()
   features/     library, runner, importer, creator, changelog
@@ -44,7 +44,7 @@ docs/           este material
 
 ## Como adicionar…
 
-**Um banco de exemplo:** salve o JSON em `src/exams/data/`, importe e liste em `src/exams/index.ts`. O teste do formato falha se for inválido.
+**Um banco de exemplo:** salve o JSON em `src/exams/catalog/` (o campo `grade` define a etapa), importe e liste em `src/exams/index.ts`. Os testes de `src/exams/exams.test.ts` exigem formato válido, 4 alternativas e sem avisos de qualidade.
 
 **Um componente:** decida a pasta (`components/ui`, ou dentro da feature), use só tokens, dê rótulo acessível, ponha o texto no dicionário, teste em 360 px nos dois temas.
 

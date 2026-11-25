@@ -3,6 +3,7 @@
 ## Feito
 - [x] 0.1.0 Importar, resolver e corrigir simulados (JSON v1)
 - [x] 0.2.0 Criar com IA por formulário, tema claro/escuro, Tailwind, estrutura em camadas, versões
+- [x] 0.3.0 Catálogo de exemplos do 1º ao 9º ano, biblioteca com exemplos sob demanda, formulário refinado
 
 ## Próximo
 - [ ] Impressão revisada (caderno de prova e gabarito separados) e verificada em papel
@@ -11,6 +12,7 @@
 - [ ] Rotas por id para bancos de exemplo (`generateStaticParams`), mantendo `/prova?id=` para bancos importados
 
 ## Depois
+- [ ] Mais de um ano por matéria no catálogo (hoje: um ano por matéria)
 - [ ] PWA instalável com uso offline
 - [ ] Relatório de evolução (por parte e por tema)
 - [ ] Registro de fontes visível na prova

@@ -23,6 +23,32 @@ export const kindOrder: ChangeKind[] = ["added", "changed", "fixed", "data", "in
 
 export const entries: ChangelogEntry[] = [
   {
+    version: "0.3.0",
+    date: "2026-11-24",
+    summary: "Biblioteca focada nos seus bancos, catálogo de exemplos do 1º ao 9º ano e formulário mais claro.",
+    changes: {
+      added: [
+        "Catálogo de exemplos: um simulado de 10 questões para cada matéria (Língua Portuguesa, Matemática, Ciências, História, Geografia, Língua Inglesa, Arte, Educação Física e Ensino Religioso), cobrindo do 1º ao 9º ano.",
+        "Em Criar com IA, \"Assuntos\" agora é uma lista de etiquetas: adicione com Enter, vírgula ou botão e remova com um clique.",
+        "Ícone \"?\" em Referência curricular explicando o que é e como achar a da escola.",
+        "Aviso discreto \"Salvo no navegador\" no topo, algum tempo depois da última alteração.",
+      ],
+      changed: [
+        "A tela inicial mostra primeiro os seus bancos; os exemplos ficam num painel que você abre quando quiser (abre sozinho enquanto a biblioteca está vazia).",
+        "\"Versões\" saiu da navegação e foi para o rodapé.",
+        "Avisos (toasts) aparecem no topo, com fade, e não cobrem mais os botões de baixo.",
+        "Campos preenchidos têm fundo mais claro e uma barra de destaque, para diferenciar do vazio.",
+        "Nível de dificuldade agora usa botões coloridos (verde, âmbar e vermelho) sempre acompanhados de texto.",
+        "O simulado de História do protótipo foi substituído pelo catálogo; as revisões da escola continuam disponíveis em um grupo à parte.",
+      ],
+      internal: [
+        "Etapa de ensino (Fundamental I e II) derivada do campo grade; incluir um banco novo no catálogo é um arquivo JSON mais uma linha no registro.",
+        "Testes do catálogo: 10 questões por banco, um por ano de 1 a 9, 4 alternativas, gabarito equilibrado e nenhum aviso de qualidade.",
+        "Novos componentes: HelpTip, TagInput e Segmented com tom.",
+      ],
+    },
+  },
+  {
     version: "0.2.0",
     date: "2026-11-24",
     summary: "Criar com IA por formulário, tema claro por padrão e nova base visual.",

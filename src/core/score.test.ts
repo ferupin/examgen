@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { validateExam } from "./schema";
 import { computeResult } from "./score";
-import historia from "@/exams/data/historia-patrimonio-brasil-5ano.json";
+import historia from "./fixtures/exam-35q-com-discursivas.json";
 
 describe("pontuação", () => {
   const r = validateExam(historia);

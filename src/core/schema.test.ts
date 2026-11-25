@@ -1,17 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { parseExamJson, validateExam } from "./schema";
-import { exampleExams } from "@/exams";
 import { templateExam, templateJson } from "./template";
-import historia from "@/exams/data/historia-patrimonio-brasil-5ano.json";
-import revisao from "@/exams/data/revisao-historia-iii-trimestre-5ano.json";
-import livro04 from "@/exams/data/historia-livro04-revisao-escola-5ano.json";
+import historia from "./fixtures/exam-35q-com-discursivas.json";
+import revisao from "@/exams/school/revisao-historia-iii-trimestre-5ano.json";
+import livro04 from "@/exams/school/historia-livro04-revisao-escola-5ano.json";
 
 describe("schema", () => {
-  it("valida os dois bancos de exemplo", () => {
+  it("valida os bancos de fixture e das revisões da escola", () => {
     expect(validateExam(historia).ok).toBe(true);
     expect(validateExam(revisao).ok).toBe(true);
     expect(validateExam(livro04).ok).toBe(true);
-    expect(exampleExams).toHaveLength(3);
   });
 
   it("conta as questões do protótipo: 30 objetivas + 5 discursivas", () => {

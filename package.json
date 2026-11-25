@@ -1,6 +1,6 @@
 {
   "name": "examgen",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Plataforma de simulados escolares a partir de bancos de questões em JSON. Sem backend, sem banco de dados.",
   "scripts": {

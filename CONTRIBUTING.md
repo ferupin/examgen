@@ -2,7 +2,7 @@
 
 ## Sem escrever código
 - Abra uma issue com o que travou, o que confundiu ou uma ideia.
-- Revise os bancos de exemplo (`src/exams/data`): gabarito, enunciado, respostas-modelo das discursivas.
+- Revise os bancos de exemplo (`src/exams/catalog`): gabarito, enunciado, respostas-modelo das discursivas.
 - Traga questões no estilo da sua escola, em JSON (formato em `docs/file-format.md`).
 
 ## Preparar o ambiente

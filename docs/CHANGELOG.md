@@ -3,6 +3,26 @@
 Também aparece no app, em `/versoes`. A fonte dos dados é `src/changelog/entries.ts`; um teste confere que as duas listas batem.
 Versões seguem o padrão X.Y.Z: função nova aumenta o Y, correção aumenta o Z, quebra de compatibilidade aumenta o X.
 
+## 0.3.0 (2026-11-24)
+
+Biblioteca focada nos seus bancos, catálogo de exemplos do 1º ao 9º ano e formulário mais claro.
+
+**Novidades**
+- Catálogo de exemplos: 10 questões por matéria (Língua Portuguesa, Matemática, Ciências, História, Geografia, Língua Inglesa, Arte, Educação Física, Ensino Religioso), do 1º ao 9º ano.
+- "Assuntos" vira lista de etiquetas removíveis.
+- Ícone "?" em Referência curricular.
+- Aviso discreto "Salvo no navegador" no topo.
+
+**Mudanças**
+- Tela inicial mostra os seus bancos; exemplos ficam num painel sob demanda.
+- "Versões" saiu da navegação e foi para o rodapé.
+- Avisos no topo, com fade.
+- Campos preenchidos se distinguem dos vazios; nível com botões coloridos.
+- O simulado de História do protótipo foi substituído pelo catálogo; as revisões da escola ficam em grupo à parte.
+
+**Por dentro**
+- Etapa derivada de `grade`; testes do catálogo; componentes HelpTip, TagInput e Segmented com tom.
+
 ## 0.2.0 (2026-11-24)
 
 Criar com IA por formulário, tema claro por padrão e nova base visual.

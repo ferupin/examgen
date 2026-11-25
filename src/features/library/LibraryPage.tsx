@@ -1,7 +1,8 @@
 "use client";
 
+import { FileUp, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { brand } from "@/config";
 import type { Exam } from "@/core/schema";
 import { countAnswered } from "@/core/score";
@@ -13,6 +14,7 @@ import { loadAttempt, loadHistory } from "@/storage/attempts";
 import { downloadJson } from "@/storage/download";
 import { loadLibrary, removeFromLibrary } from "@/storage/library";
 import { ExamCard, type ExamStatus } from "./ExamCard";
+import { ExamplesPanel } from "./ExamplesPanel";
 
 function readStatus(exams: Exam[]): Record<string, ExamStatus> {
   const st: Record<string, ExamStatus> = {};
@@ -38,6 +40,9 @@ export function LibraryPage() {
   const [mine, setMine] = useState<Exam[]>([]);
   const [status, setStatus] = useState<Record<string, ExamStatus>>({});
   const [ready, setReady] = useState(false);
+  const [examplesOpen, setExamplesOpen] = useState(false);
+  // Se a pessoa já abriu ou fechou o painel, não mexemos mais nele.
+  const touched = useRef(false);
   const confirm = useConfirm();
   const toast = useToast();
 
@@ -46,6 +51,8 @@ export function LibraryPage() {
     setMine(lib);
     setStatus(readStatus([...lib, ...exampleExams]));
     setReady(true);
+    // Biblioteca vazia: abre os exemplos uma vez, para a tela não ficar sem nada.
+    if (lib.length === 0 && !touched.current) setExamplesOpen(true);
   }, []);
   useEffect(refresh, [refresh]);
 
@@ -65,6 +72,11 @@ export function LibraryPage() {
     [confirm, toast, refresh],
   );
 
+  const toggleExamples = useCallback((open: boolean) => {
+    touched.current = true;
+    setExamplesOpen(open);
+  }, []);
+
   return (
     <div className="sheet">
       <h1 className="page-title">{t("library.title")}</h1>
@@ -72,7 +84,21 @@ export function LibraryPage() {
         {brand.tagline} {t("library.lead")}
       </p>
 
-      <h2 className="section-title">{t("library.mine")}</h2>
+      <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <h2 className="section-title !mb-0 !mt-0">{t("library.mine")}</h2>
+        {mine.length > 0 && (
+          <div className="ml-auto flex flex-wrap gap-2">
+            <Link className="btn btn-sm" href="/importar">
+              <FileUp size={16} aria-hidden="true" />
+              {t("library.addImport")}
+            </Link>
+            <Link className="btn btn-sm" href="/criar">
+              <Sparkles size={16} aria-hidden="true" />
+              {t("library.addCreate")}
+            </Link>
+          </div>
+        )}
+      </div>
       {!ready ? (
         <p>{t("common.loading")}</p>
       ) : mine.length === 0 ? (
@@ -94,12 +120,12 @@ export function LibraryPage() {
         </div>
       )}
 
-      <h2 className="section-title">{t("library.examples")}</h2>
-      <div className="grid gap-3.5 sm:grid-cols-2">
-        {exampleExams.map((e) => (
-          <ExamCard key={e.id} exam={e} status={status[e.id]} onDownload={downloadExam} />
-        ))}
-      </div>
+      <ExamplesPanel
+        open={examplesOpen}
+        onToggle={toggleExamples}
+        status={status}
+        onDownload={downloadExam}
+      />
     </div>
   );
 }

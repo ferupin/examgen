@@ -1,20 +1,64 @@
+import { stageOf, yearOf, type Stage } from "@/core/stage";
 import { validateExam, type Exam } from "@/core/schema";
-import historia from "./data/historia-patrimonio-brasil-5ano.json";
-import revisao from "./data/revisao-historia-iii-trimestre-5ano.json";
-import livro04 from "./data/historia-livro04-revisao-escola-5ano.json";
+import artes2 from "./catalog/arte-2ano.json";
+import ciencias4 from "./catalog/ciencias-4ano.json";
+import educacaoFisica1 from "./catalog/educacao-fisica-1ano.json";
+import ensinoReligioso9 from "./catalog/ensino-religioso-9ano.json";
+import geografia6 from "./catalog/geografia-6ano.json";
+import historia5 from "./catalog/historia-5ano.json";
+import ingles7 from "./catalog/ingles-7ano.json";
+import portugues3 from "./catalog/lingua-portuguesa-3ano.json";
+import matematica8 from "./catalog/matematica-8ano.json";
+import livro04 from "./school/historia-livro04-revisao-escola-5ano.json";
+import revisao from "./school/revisao-historia-iii-trimestre-5ano.json";
 
 /**
- * Registro dos bancos que acompanham o app. Adicionar um banco = um arquivo
- * JSON em ./data + uma linha aqui. Todos são validados na carga; o teste
- * exams.test.ts falha se algum ficar inválido.
+ * Registro dos bancos que acompanham o app, em dois grupos:
+ *  - catálogo: um exemplo de 10 questões por matéria, do 1º ao 9º ano;
+ *  - school: revisões reais da escola (transcritas de fotos).
+ * Adicionar um banco = um arquivo JSON + uma linha aqui. A etapa vem do
+ * campo `grade`. Todos são validados na carga e o teste exams.test.ts
+ * falha se algum ficar inválido.
  */
-const raws: unknown[] = [livro04, revisao, historia];
+const catalogRaw: unknown[] = [
+  educacaoFisica1,
+  artes2,
+  portugues3,
+  ciencias4,
+  historia5,
+  geografia6,
+  ingles7,
+  matematica8,
+  ensinoReligioso9,
+];
+const schoolRaw: unknown[] = [livro04, revisao];
 
-export const exampleExams: Exam[] = raws.flatMap((raw) => {
-  const r = validateExam(raw);
-  return r.ok ? [r.exam] : [];
-});
+function load(raws: unknown[]): Exam[] {
+  return raws.flatMap((raw) => {
+    const r = validateExam(raw);
+    return r.ok ? [r.exam] : [];
+  });
+}
+
+const byYear = (a: Exam, b: Exam) =>
+  (yearOf(a.grade) ?? 99) - (yearOf(b.grade) ?? 99) ||
+  a.subject.localeCompare(b.subject, "pt-BR");
+
+export const catalogExams: Exam[] = load(catalogRaw).sort(byYear);
+export const schoolExams: Exam[] = load(schoolRaw).sort(byYear);
+export const exampleExams: Exam[] = [...catalogExams, ...schoolExams];
 
 export function findExample(id: string): Exam | undefined {
   return exampleExams.find((e) => e.id === id);
+}
+
+/** Catálogo agrupado por etapa, na ordem de exibição. Grupos vazios não aparecem. */
+export function catalogByStage(): { stage: Stage; exams: Exam[] }[] {
+  const order: Stage[] = ["fundamental-1", "fundamental-2", "other"];
+  return order
+    .map((stage) => ({
+      stage,
+      exams: catalogExams.filter((e) => stageOf(e.grade) === stage),
+    }))
+    .filter((g) => g.exams.length > 0);
 }
