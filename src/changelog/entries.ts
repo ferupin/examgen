@@ -23,6 +23,17 @@ export const kindOrder: ChangeKind[] = ["added", "changed", "fixed", "data", "in
 
 export const entries: ChangelogEntry[] = [
   {
+    version: "0.4.1",
+    date: "2026-11-25",
+    summary: "Destaque das questões a rever mais suave, com fade-out.",
+    changes: {
+      changed: [
+        "Ao navegar pelas questões a rever, o destaque agora é um brilho azul suave que entra rápido e se dissolve devagar, em vez de um contorno que some de repente.",
+        "Com a opção do sistema \"reduzir movimento\", o destaque fica parado e discreto, sem animação.",
+      ],
+    },
+  },
+  {
     version: "0.4.0",
     date: "2026-11-25",
     summary: "Fórmulas matemáticas e químicas, navegação pelas questões a rever, botão de voltar ao topo e criador com \"Sem material\".",

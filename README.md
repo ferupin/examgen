@@ -15,6 +15,7 @@ Versão atual: **0.3.0** (veja `docs/CHANGELOG.md` ou a página `/versoes` do ap
 - [x] 0.1.0 MVP: importar, resolver, corrigir, histórico
 - [x] 0.2.0 Criar com IA por formulário, tema, Tailwind, estrutura em camadas, versões
 - [x] 0.3.0 Biblioteca focada nos seus bancos, catálogo do 1º ao 9º ano, formulário refinado
+- [x] 0.4.1 Destaque de revisão mais suave
 - [x] 0.4.0 Fórmulas (KaTeX), revisão das questões a rever, botão de topo, criador com "Sem material"
 - [ ] Impressão revisada · identidade visual · PWA offline · relatório de evolução (`docs/ROADMAP.md`)
 

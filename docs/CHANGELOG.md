@@ -3,6 +3,14 @@
 Também aparece no app, em `/versoes`. A fonte dos dados é `src/changelog/entries.ts`; um teste confere que as duas listas batem.
 Versões seguem o padrão X.Y.Z: função nova aumenta o Y, correção aumenta o Z, quebra de compatibilidade aumenta o X.
 
+## 0.4.1 (2026-11-25)
+
+Destaque das questões a rever mais suave, com fade-out.
+
+**Mudanças**
+- O destaque é um brilho azul suave que entra rápido e se dissolve devagar, em vez de um contorno que some de repente.
+- Com "reduzir movimento" ativado no sistema, o destaque fica parado e discreto.
+
 ## 0.4.0 (2026-11-25)
 
 Fórmulas matemáticas e químicas, navegação pelas questões a rever, botão de voltar ao topo e criador com "Sem material".

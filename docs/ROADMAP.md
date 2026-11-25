@@ -2,6 +2,8 @@
 
 Atualizado a cada versão. Cada item tem **custo** (esforço e risco de manter), **necessidade** (o que acontece sem ele) e **importância** (peso para o conceito do projeto: simulados escolares, sem servidor, bancos gerados por qualquer IA, dados só no navegador). Escala: baixo / médio / alto.
 
+O detalhamento técnico de cada item (arquivos, formato, testes, riscos, dependências) está em [plano-de-implementacao.md](plano-de-implementacao.md).
+
 ## Como priorizamos
 1. Primeiro o que protege o dado e a confiança no resultado (backup, gabarito certo, impressão).
 2. Depois o que fecha o ciclo de aprender (refazer erros, evolução por assunto).
@@ -12,18 +14,19 @@ Atualizado a cada versão. Cada item tem **custo** (esforço e risco de manter),
 - [x] 0.1.0 Importar, resolver e corrigir simulados (JSON v1)
 - [x] 0.2.0 Criar com IA por formulário, tema claro/escuro, Tailwind, estrutura em camadas, versões
 - [x] 0.3.0 Catálogo de exemplos do 1º ao 9º ano, biblioteca com exemplos sob demanda, formulário refinado
+- [x] 0.4.1 Destaque de revisão mais suave, com fade-out
 - [x] 0.4.0 Fórmulas (KaTeX), navegador de questões a rever, botão de topo, criador com "Sem material", importar reformulado
 
-## Fase 1: Confiança e segurança dos dados (próxima)
+## Fase 1 (0.5.0): Confiança e segurança dos dados (próxima)
 | Item | Custo | Necessidade | Importância |
 |---|---|---|---|
 | Backup e restauração de tudo (biblioteca + tentativas + criador) em um arquivo. Hoje limpar o navegador apaga tudo. | baixo | alta | alta |
 | Impressão revisada: caderno de prova e gabarito separados, fórmulas incluídas, verificada em papel (nunca testada de fato). | médio | alta | alta |
 | Pré-visualização no Importar: ver as questões, o gabarito e os avisos antes de salvar. IA erra gabarito e o app hoje só valida formato. | médio | alta | alta |
-| CI no GitHub (tsc, testes, build) a cada push; evita regressão como as sobras de arquivos antigos. | baixo | média | média |
+| E2E dentro do repositório e CI no GitHub (tsc, testes, build) a cada push. Os scripts E2E hoje não estão no repositório. | baixo | alta | média |
 | Teste real com leitor de tela (NVDA/VoiceOver) nas telas principais e em fórmulas. Hoje só axe automático. | baixo | média | alta |
 
-## Fase 2: Ciclo de aprender
+## Fase 2 (0.6.0): Ciclo de aprender
 | Item | Custo | Necessidade | Importância |
 |---|---|---|---|
 | "Refazer só as que errei": nova tentativa com as questões de `reviewTargets`. Reaproveita o que existe. | baixo | média | alta |
@@ -32,7 +35,7 @@ Atualizado a cada versão. Cada item tem **custo** (esforço e risco de manter),
 | Cronômetro opcional e embaralhar alternativas por tentativa (sem mudar ids). | baixo | baixa | média |
 | Editar gabarito e texto de uma questão no app, para corrigir o erro da IA sem voltar ao JSON. | alto | média | alta |
 
-## Fase 3: Conteúdo além do texto
+## Fase 3 (0.7.0): Conteúdo além do texto
 | Item | Custo | Necessidade | Importância |
 |---|---|---|---|
 | Imagens nas questões (mapas, gráficos, figuras) guardadas no navegador, com texto alternativo obrigatório. A criação por foto do livro pede isso. | alto | alta para Geografia, Matemática, Ciências | alta |
@@ -40,7 +43,7 @@ Atualizado a cada versão. Cada item tem **custo** (esforço e risco de manter),
 | Mais de um ano por matéria no catálogo e Ensino Médio. Conteúdo escrito por mim precisa de revisão humana. | médio (conteúdo) | média | média |
 | Mais matérias de formação técnica/idiomas conforme pedidos reais. | médio | baixa | baixa |
 
-## Fase 4: Distribuição
+## Fase 4 (0.8.0): Distribuição
 | Item | Custo | Necessidade | Importância |
 |---|---|---|---|
 | PWA instalável com uso offline. | médio | média | média |

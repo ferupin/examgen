@@ -7,7 +7,8 @@ import { allQuestions, reviewTargets } from "@/core/score";
 import { t } from "@/i18n";
 import { useRunner } from "./store";
 
-const FLASH_MS = 2200;
+// Um pouco mais que a animação (2,8 s), para ela terminar sozinha antes de o atributo sair.
+const FLASH_MS = 3000;
 
 /**
  * Depois da correção: leva, em ordem, às questões a rever (erradas, em branco
