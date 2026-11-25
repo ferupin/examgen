@@ -21,7 +21,7 @@
         {
           "type": "multiple_choice",
           "id": "q01",
-          "prompt": "Qual é o valor de 2⁵?",
+          "prompt": "Qual é o valor de $2^5$?",
           "options": [
             {
               "id": "a",
@@ -41,13 +41,13 @@
             }
           ],
           "answer": "a",
-          "explanation": "2⁵ = 2 × 2 × 2 × 2 × 2 = 32.",
+          "explanation": "$2^5 = 2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$.",
           "points": 1
         },
         {
           "type": "multiple_choice",
           "id": "q02",
-          "prompt": "Resolva 3x + 5 = 20. Qual é o valor de x?",
+          "prompt": "Resolva $3x + 5 = 20$. Qual é o valor de $x$?",
           "options": [
             {
               "id": "a",
@@ -67,7 +67,7 @@
             }
           ],
           "answer": "d",
-          "explanation": "3x = 20 − 5 = 15, então x = 15 ÷ 3 = 5.",
+          "explanation": "$3x = 20 - 5 = 15$, então $x = 15 \\div 3 = 5$.",
           "points": 1
         },
         {
@@ -77,23 +77,23 @@
           "options": [
             {
               "id": "a",
-              "text": "4,5 × 10²"
+              "text": "$4{,}5 \\times 10^2$"
             },
             {
               "id": "b",
-              "text": "45 × 10³"
+              "text": "$45 \\times 10^3$"
             },
             {
               "id": "c",
-              "text": "4,5 × 10³"
+              "text": "$4{,}5 \\times 10^3$"
             },
             {
               "id": "d",
-              "text": "4,5 × 10⁴"
+              "text": "$4{,}5 \\times 10^4$"
             }
           ],
           "answer": "c",
-          "explanation": "4.500 = 4,5 × 1.000 = 4,5 × 10³.",
+          "explanation": "$4500 = 4{,}5 \\times 1000 = 4{,}5 \\times 10^3$.",
           "points": 1
         },
         {
@@ -101,9 +101,9 @@
           "id": "q04",
           "prompt": "Analise as afirmativas:",
           "statements": [
-            "√49 = 7",
-            "(−3)² = −9",
-            "10⁰ = 1"
+            "$\\sqrt{49} = 7$",
+            "$(-3)^2 = -9$",
+            "$10^0 = 1$"
           ],
           "options": [
             {
@@ -124,7 +124,7 @@
             }
           ],
           "answer": "b",
-          "explanation": "√49 = 7 e 10⁰ = 1. Já (−3)² = +9, e não −9.",
+          "explanation": "$\\sqrt{49} = 7$ e $10^0 = 1$. Já $(-3)^2 = +9$, e não $-9$.",
           "points": 1
         },
         {
@@ -182,7 +182,7 @@
             }
           ],
           "answer": "d",
-          "explanation": "Pelo teorema de Pitágoras: 3² + 4² = 9 + 16 = 25, e √25 = 5.",
+          "explanation": "Pelo teorema de Pitágoras: $3^2 + 4^2 = 9 + 16 = 25$, e $\\sqrt{25} = 5$.",
           "points": 1
         },
         {
@@ -218,23 +218,23 @@
           "options": [
             {
               "id": "a",
-              "text": "1/3"
+              "text": "$\\frac{1}{3}$"
             },
             {
               "id": "b",
-              "text": "1/6"
+              "text": "$\\frac{1}{6}$"
             },
             {
               "id": "c",
-              "text": "1/2"
+              "text": "$\\frac{1}{2}$"
             },
             {
               "id": "d",
-              "text": "2/3"
+              "text": "$\\frac{2}{3}$"
             }
           ],
           "answer": "c",
-          "explanation": "Há 3 pares (2, 4, 6) em 6 faces: 3/6 = 1/2.",
+          "explanation": "Há 3 pares (2, 4, 6) em 6 faces: $\\frac{3}{6} = \\frac{1}{2}$.",
           "points": 1
         },
         {
@@ -289,7 +289,7 @@
             }
           ],
           "answer": "b",
-          "explanation": "Soma: 12 + 13 + 13 + 14 + 18 = 70. Média: 70 ÷ 5 = 14.",
+          "explanation": "Soma: $12 + 13 + 13 + 14 + 18 = 70$. Média: $70 \\div 5 = 14$.",
           "points": 1
         },
         {
@@ -315,7 +315,7 @@
             }
           ],
           "answer": "d",
-          "explanation": "Perímetro = 2 × (12 + 8) = 40 m. A área, 96 m², é outra grandeza.",
+          "explanation": "Perímetro = $2 \\times (12 + 8) = 40$ m. A área, $96\\,\\mathrm{m}^2$, é outra grandeza.",
           "points": 1
         }
       ]

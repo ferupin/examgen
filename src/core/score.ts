@@ -114,3 +114,19 @@ export function computeResult(
     percent: pct(earned, max),
   };
 }
+
+/**
+ * Questões para revisar depois da correção, na ordem da prova:
+ * objetivas erradas ou em branco; discursivas em branco ou com nota abaixo do máximo.
+ * Discursiva respondida e ainda sem nota não entra (não se sabe se errou).
+ */
+export function reviewTargets(exam: Exam, answers: Answers, grades: Grades): string[] {
+  return allQuestions(exam)
+    .filter((q) => {
+      if (q.type === "multiple_choice") return answers[q.id] !== q.answer;
+      if (!isAnswered(q, answers)) return true;
+      const points = grades[q.id]?.points;
+      return points !== undefined && points < q.maxPoints;
+    })
+    .map((q) => q.id);
+}

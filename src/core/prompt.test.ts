@@ -50,6 +50,28 @@ describe("prompt", () => {
     expect(p).toContain('"schemaVersion"');
     expect(p.indexOf("# Esqueleto")).toBeGreaterThan(p.indexOf("# Fontes"));
   });
+  it("modo sem material manda buscar referências e libera fontes externas", () => {
+    const p = buildPrompt({ ...f, inputMode: "none" });
+    expect(p).toContain("NÃO vou enviar material");
+    expect(p).not.toContain("Pronto, pode enviar");
+    expect(p).toContain("busque referências confiáveis");
+    expect(p).toContain("NUNCA invente");
+    expect(p).toContain("precisa de conferência");
+    const sk = buildSkeleton({ ...f, materials: "", inputMode: "none" });
+    expect(sk.sources.onlyProvidedMaterial).toBe(false);
+    expect(sk.sources.providedMaterial[0]).toMatch(/Nenhum material/);
+  });
+  it("pedido ensina LaTeX com barra dobrada e preço em reais", () => {
+    const p = buildPrompt(f);
+    expect(p).toContain("# Fórmulas e símbolos");
+    expect(p).toContain("\\\\frac{1}{2}");
+    expect(p).toContain("R$ 5,00");
+  });
+  it("modo texto fala em texto, não em imagens", () => {
+    const p = buildPrompt({ ...f, inputMode: "text" });
+    expect(p).toContain("Pronto, pode enviar o texto.");
+    expect(p).not.toContain("Sobre as imagens");
+  });
   it("campos faltando viram [PREENCHER]", () => {
     expect(buildPrompt(defaultFields)).toContain("[PREENCHER: série ou ano]");
     expect(missingRequired(defaultFields)).toEqual(["série ou ano", "disciplina"]);

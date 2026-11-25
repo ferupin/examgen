@@ -16,6 +16,7 @@ import { HistoryPanel } from "./HistoryPanel";
 import { McCard } from "./McCard";
 import { OpenCard } from "./OpenCard";
 import { ProgressBar } from "./ProgressBar";
+import { ReviewNav } from "./ReviewNav";
 import { ResultPanel } from "./ResultPanel";
 import { storeFor, useRunner } from "./store";
 import { useAutosave } from "./useAutosave";
@@ -155,6 +156,7 @@ function Runner({ exam }: { exam: Exam }) {
       ))}
 
       {locked && <ResultPanel exam={exam} />}
+      {locked && <ReviewNav exam={exam} />}
 
       <div className="mb-2 mt-7 flex flex-wrap justify-center gap-2.5 print:hidden">
         <button type="button" className="btn btn-primary" onClick={finish} disabled={locked}>

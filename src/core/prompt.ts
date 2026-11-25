@@ -22,7 +22,7 @@ export const CreatorSchema = z.object({
   title: str(),
   topics: str(),
   materials: str(),
-  inputMode: z.enum(["images", "text"]).catch("images"),
+  inputMode: z.enum(["images", "text", "none"]).catch("images"),
   objectiveCount: str(),
   openCount: str("0"),
   partsCount: str(),
@@ -112,14 +112,17 @@ export function buildSkeleton(f: CreatorFields) {
   if (topics) sk.description = clip(`Conteúdo: ${topics}`, 160);
 
   const mats = lines(f.materials);
+  const none = f.inputMode === "none";
   sk.sources.providedMaterial = mats.length
     ? mats
     : [
-        f.inputMode === "images"
-          ? "Imagens enviadas pelo responsável"
-          : "Texto enviado pelo responsável",
+        none
+          ? "Nenhum material enviado; referências escolhidas pela IA"
+          : f.inputMode === "images"
+            ? "Imagens enviadas pelo responsável"
+            : "Texto enviado pelo responsável",
       ];
-  sk.sources.onlyProvidedMaterial = !f.allowExternal;
+  sk.sources.onlyProvidedMaterial = !f.allowExternal && !none;
 
   if ((toInt(f.openCount) ?? 0) === 0) {
     sk.parts[0].questions = sk.parts[0].questions.filter(
@@ -142,6 +145,8 @@ export function buildPrompt(f: CreatorFields): string {
   const need = (v: string, label: string) =>
     v.trim() || `[PREENCHER: ${label}]`;
   const images = f.inputMode === "images";
+  const none = f.inputMode === "none";
+  const external = f.allowExternal || none;
   const objective = toInt(f.objectiveCount);
   const open = toInt(f.openCount) ?? 0;
   const parts = toInt(f.partsCount);
@@ -151,27 +156,38 @@ export function buildPrompt(f: CreatorFields): string {
 
   blocks.push(
     `Você vai criar um simulado escolar interativo como um ARQUIVO JSON, seguindo EXATAMENTE o esqueleto da seção "Esqueleto" (no final). ${
-      images
-        ? "Eu só vou te enviar IMAGENS (fotos de páginas do livro, revisões da escola, cadernos). Você lê, organiza e monta tudo."
-        : "Eu só vou te enviar o TEXTO do material. Você organiza e monta tudo."
+      none
+        ? "Eu NÃO vou enviar material (nem imagens nem texto). Você monta o simulado a partir do contexto abaixo (série, disciplina, assuntos e referência curricular) e de referências confiáveis."
+        : images
+          ? "Eu só vou te enviar IMAGENS (fotos de páginas do livro, revisões da escola, cadernos). Você lê, organiza e monta tudo."
+          : "Eu só vou te enviar o TEXTO do material. Você organiza e monta tudo."
     }`,
   );
 
   blocks.push(
-    [
-      "# Como vamos trabalhar",
-      images
-        ? '1. Depois de ler este pedido, responda apenas: "Pronto, pode enviar as imagens." (Se as imagens já vieram junto com este pedido, pule para o passo 3.)'
-        : '1. Depois de ler este pedido, responda apenas: "Pronto, pode enviar o texto." (Se o texto já veio junto com este pedido, pule para o passo 3.)',
-      images
-        ? '2. Eu envio as imagens em uma ou mais mensagens. Se vierem em mais de uma, responda só "Recebido (N imagens)" a cada mensagem e espere eu escrever GERAR.'
-        : '2. Eu envio o texto em uma ou mais mensagens. Se vierem em mais de uma, responda só "Recebido" a cada mensagem e espere eu escrever GERAR.',
-      images
-        ? "3. Leia todo o texto das imagens. Se alguma estiver ilegível, cortada, de cabeça para baixo ou ambígua, liste exatamente quais e pergunte ANTES de gerar. Não adivinhe nem invente trechos."
-        : "3. Leia todo o material. Se algo estiver incompleto ou ambíguo, liste o que falta e pergunte ANTES de gerar. Não adivinhe nem invente trechos.",
-      "4. Gere o simulado. Responda SOMENTE com um único bloco de código JSON, sem texto antes ou depois.",
-      "5. Se eu colar mensagens de erro de validação, corrija apenas o que foi apontado e devolva o JSON COMPLETO.",
-    ].join("\n"),
+    (none
+      ? [
+          "# Como vamos trabalhar",
+          '1. Não há material para ler. Se faltar algo essencial (série, disciplina ou assuntos), pergunte ANTES de gerar. Caso contrário, gere direto.',
+          "2. Construa o conteúdo com base na série, na referência curricular e nos assuntos informados, no nível que se espera para esse ano. Não invente fatos.",
+          "3. Gere o simulado. Responda SOMENTE com um único bloco de código JSON, sem texto antes ou depois.",
+          "4. Se eu colar mensagens de erro de validação, corrija apenas o que foi apontado e devolva o JSON COMPLETO.",
+        ]
+      : [
+          "# Como vamos trabalhar",
+          images
+            ? '1. Depois de ler este pedido, responda apenas: "Pronto, pode enviar as imagens." (Se as imagens já vieram junto com este pedido, pule para o passo 3.)'
+            : '1. Depois de ler este pedido, responda apenas: "Pronto, pode enviar o texto." (Se o texto já veio junto com este pedido, pule para o passo 3.)',
+          images
+            ? '2. Eu envio as imagens em uma ou mais mensagens. Se vierem em mais de uma, responda só "Recebido (N imagens)" a cada mensagem e espere eu escrever GERAR.'
+            : '2. Eu envio o texto em uma ou mais mensagens. Se vierem em mais de uma, responda só "Recebido" a cada mensagem e espere eu escrever GERAR.',
+          images
+            ? "3. Leia todo o texto das imagens. Se alguma estiver ilegível, cortada, de cabeça para baixo ou ambígua, liste exatamente quais e pergunte ANTES de gerar. Não adivinhe nem invente trechos."
+            : "3. Leia todo o material. Se algo estiver incompleto ou ambíguo, liste o que falta e pergunte ANTES de gerar. Não adivinhe nem invente trechos.",
+          "4. Gere o simulado. Responda SOMENTE com um único bloco de código JSON, sem texto antes ou depois.",
+          "5. Se eu colar mensagens de erro de validação, corrija apenas o que foi apontado e devolva o JSON COMPLETO.",
+        ]
+    ).join("\n"),
   );
 
   if (images) {
@@ -195,7 +211,9 @@ export function buildPrompt(f: CreatorFields): string {
       f.curriculum.trim() &&
         `- Referência curricular: ${f.curriculum.trim()} (orienta a adequação das habilidades à série; não substitui o conteúdo do material)`,
       f.studentNotes.trim() && `- Observações sobre o aluno: ${f.studentNotes.trim()}`,
-      "Adeque linguagem, complexidade e exemplos a essa série. O conteúdo específico vem do MATERIAL que eu enviar. Não contradiga o material nem invente informações.",
+      none
+        ? "Adeque linguagem, complexidade e exemplos a essa série e à referência curricular. Como não há material, o conteúdo vem dos assuntos listados e de referências confiáveis para esse ano. Não invente informações."
+        : "Adeque linguagem, complexidade e exemplos a essa série. O conteúdo específico vem do MATERIAL que eu enviar. Não contradiga o material nem invente informações.",
     ]
       .filter(Boolean)
       .join("\n"),
@@ -231,7 +249,9 @@ export function buildPrompt(f: CreatorFields): string {
   blocks.push(
     [
       "# Como elaborar as questões",
-      "1. Levante todos os assuntos, conceitos, datas, personagens e exemplos do material.",
+      none
+        ? "1. Levante os assuntos, conceitos, datas, personagens e exemplos que esse ano escolar costuma trabalhar nos assuntos informados, segundo a referência curricular."
+        : "1. Levante todos os assuntos, conceitos, datas, personagens e exemplos do material.",
       "2. Agrupe em partes temáticas (campo \"parts\") e cubra o conteúdo de forma equilibrada, sem repetições desnecessárias.",
       "3. Ajuste linguagem e profundidade à série. Linguagem clara, acolhedora e educativa.",
       "4. Construa gabarito, explicações e critérios ANTES de entregar.",
@@ -252,6 +272,17 @@ export function buildPrompt(f: CreatorFields): string {
 
   blocks.push(
     [
+      "# Fórmulas e símbolos",
+      "- Quando a matéria pedir (matemática, física, química, geometria), escreva as fórmulas em LaTeX entre cifrões: $x^2 + 3x = 10$ no meio do texto e $$\\frac{a}{b}$$ em bloco. Química: $\\ce{H2O}$.",
+      '- No JSON a barra invertida precisa ser DOBRADA: "$\\\\frac{1}{2}$", "$\\\\times$", "$\\\\theta$". Com uma barra só, o JSON quebra a fórmula em silêncio.',
+      "- Não escreva símbolos matemáticos soltos fora dos cifrões (≤, ≥, ≠, π, √): coloque dentro da fórmula.",
+      '- Valores em reais ficam como texto normal: "R$ 5,00" (com espaço depois de R$), sem cifrão extra.',
+      '- Não desenhe gráficos nem figuras. Descreva a situação em "context" ou use "table" para dados.',
+    ].join("\n"),
+  );
+
+  blocks.push(
+    [
       "# Confira antes de responder",
       '- Cada "answer" é o id de uma alternativa que existe na mesma questão.',
       "- Ids de questões únicos em todo o arquivo (q01, q02, …).",
@@ -267,10 +298,14 @@ export function buildPrompt(f: CreatorFields): string {
       "# Fontes",
       mats.length > 0
         ? '- Preencha "sources.providedMaterial" com o material que eu informei acima.'
-        : '- Preencha "sources.providedMaterial" com o material que eu enviar.',
-      f.allowExternal
-        ? '- Você pode consultar fontes confiáveis para verificar fatos. Liste em "external" SOMENTE as que realmente consultou, com link e data de acesso, e use "onlyProvidedMaterial": false.'
-        : '- Use SOMENTE o material que eu enviar: "onlyProvidedMaterial": true e "external" vazio. Não consulte nem cite fontes externas.',
+        : none
+          ? '- Preencha "sources.providedMaterial" com "Nenhum material enviado; referências escolhidas pela IA".'
+          : '- Preencha "sources.providedMaterial" com o material que eu enviar.',
+      none
+        ? '- Como não há material, busque referências confiáveis no nível do que foi descrito acima (série, referência curricular e assuntos): documento curricular oficial, livros didáticos e materiais educacionais reconhecidos. Liste em "external" SOMENTE as que realmente consultou, com link e data de acesso, e use "onlyProvidedMaterial": false. Se você não tiver acesso à internet, use seu conhecimento geral do conteúdo desse ano, deixe "external" vazio e escreva em "sources.notes" que não houve consulta e que o conteúdo precisa de conferência pelo responsável.'
+        : external
+          ? '- Você pode consultar fontes confiáveis para verificar fatos. Liste em "external" SOMENTE as que realmente consultou, com link e data de acesso, e use "onlyProvidedMaterial": false.'
+          : '- Use SOMENTE o material que eu enviar: "onlyProvidedMaterial": true e "external" vazio. Não consulte nem cite fontes externas.',
       "- NUNCA invente referências, páginas ou links.",
     ].join("\n"),
   );

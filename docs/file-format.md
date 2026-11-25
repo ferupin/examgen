@@ -22,6 +22,15 @@ Um arquivo válido na versão 1 continua válido. Mudanças futuras são **aditi
 
 IDs de questão são únicos no arquivo. O padrão do projeto é 4 alternativas (a a d), uma correta.
 
+## Fórmulas e símbolos
+Todo texto de questão (contexto, enunciado, alternativas, afirmativas, explicação, resposta esperada, tabelas) aceita LaTeX entre cifrões:
+- em linha: `$x^2 + 3x = 10$`; em bloco: `$$\\frac{a}{b}$$`; química: `$\\ce{H2O}$`;
+- **no JSON a barra invertida é dobrada** (`"$\\frac{1}{2}$"`). Com uma barra só, `\f`, `\t`, `\b` e `\r` viram caracteres de controle e a importação é recusada com explicação;
+- preço em reais é texto normal (`R$ 5,00`, com espaço depois de `R$`); `\$` escreve um cifrão literal;
+- não há desenho de gráficos: descreva em `context` ou use `table`.
+
+O KaTeX só é carregado quando a questão tem fórmula. Cada fórmula recebe um `aria-label` em português (`speakTex`) para leitores de tela; a leitura cobre o básico (potência, fração, raiz, operações).
+
 ## Dados no navegador
 
 Chaves do `localStorage` (prefixo em `src/config.ts`, hoje `examgen.v1`): `.library`, `.attempt.<id>`, `.history.<id>`, `.creator`, `.theme`. Tudo que é lido passa por Zod. Mudar o nome do produto **não** muda o prefixo.

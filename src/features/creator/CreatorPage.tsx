@@ -208,9 +208,13 @@ export function CreatorPage() {
                 options={[
                   { value: "images", label: t("creator.modeImages") },
                   { value: "text", label: t("creator.modeText") },
+                  { value: "none", label: t("creator.modeNone") },
                 ]}
                 onChange={(v) => set("inputMode", v)}
               />
+              <p className="text-[13px] text-muted">
+                {t(f.inputMode === "none" ? "creator.modeNoneHint" : f.inputMode === "text" ? "creator.modeTextHint" : "creator.modeImagesHint")}
+              </p>
             </div>
 
             <Field label={t("creator.objectiveCount")} hint={t("creator.objectiveHint")} error={err("objectiveCount")}>
@@ -219,7 +223,12 @@ export function CreatorPage() {
             <Field label={t("creator.openCount")} error={err("openCount")}>
               {(a) => <input className="input" type="text" placeholder={ph("creator.openPh")} {...a} {...digits("openCount")} />}
             </Field>
-            <Field label={t("creator.partsCount")} hint={t("creator.partsHint")} error={err("partsCount")}>
+            <Field
+              label={t("creator.partsCount")}
+              hint={t("creator.partsHint")}
+              error={err("partsCount")}
+              help={{ label: t("creator.partsCount"), body: <p>{t("creator.partsHelp")}</p> }}
+            >
               {(a) => <input className="input" type="text" placeholder={ph("creator.partsPh")} {...a} {...digits("partsCount")} />}
             </Field>
             <div className="grid content-start gap-1.5">
@@ -255,8 +264,8 @@ export function CreatorPage() {
                 <span>{t("creator.mimic")}</span>
               </label>
               <label className="flex cursor-pointer items-start gap-2.5 text-[15px]">
-                <input type="checkbox" className="mt-0.5 size-[22px] flex-none accent-accent" checked={f.allowExternal} onChange={(e) => set("allowExternal", e.target.checked)} />
-                <span>{t("creator.external")}</span>
+                <input type="checkbox" className="mt-0.5 size-[22px] flex-none accent-accent" checked={f.allowExternal || f.inputMode === "none"} disabled={f.inputMode === "none"} onChange={(e) => set("allowExternal", e.target.checked)} />
+                <span>{t(f.inputMode === "none" ? "creator.externalForced" : "creator.external")}</span>
               </label>
             </div>
           </div>
@@ -264,7 +273,9 @@ export function CreatorPage() {
       </div>
 
       <h2 className="section-title">{t("creator.promptTitle")}</h2>
-      <p className="mb-2.5 text-muted">{t("creator.promptLead")}</p>
+      <p className="mb-2.5 text-muted">
+        {t(f.inputMode === "none" ? "creator.promptLeadNone" : f.inputMode === "text" ? "creator.promptLeadText" : "creator.promptLead")}
+      </p>
       <textarea
         className="input min-h-80 font-mono text-[13px] leading-normal"
         readOnly
@@ -309,7 +320,7 @@ export function CreatorPage() {
       </div>
 
       <ol className="mt-5 grid gap-3 sm:grid-cols-3">
-        {(["creator.step1", "creator.step2", "creator.step3"] as const).map((k, i) => (
+        {(["creator.step1", f.inputMode === "none" ? "creator.step2None" : f.inputMode === "text" ? "creator.step2Text" : "creator.step2", "creator.step3"] as const).map((k, i) => (
           <li key={k} className="rounded-xl border border-line bg-paper-2 px-4 py-3.5">
             <span className="mb-1.5 grid size-7 place-items-center rounded-full bg-warm font-extrabold text-paper">
               {i + 1}

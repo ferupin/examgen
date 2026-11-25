@@ -28,9 +28,15 @@ Correto/errado têm texto e ícone. Campo inválido tem borda vermelha **e** men
 | Resultado de uma ação | Toast no topo (sobrepõe, nunca empurra o layout, entra e sai com fade). O tipo `saved` é o aviso discreto de "salvo no navegador" |
 | Explicar um termo | Ícone "?" (`HelpTip`): abre com mouse, foco ou toque; Esc fecha |
 | Lista de itens curtos | Etiquetas removíveis (`TagInput`): Enter, vírgula ou botão adicionam |
-| Nível/dificuldade | `Segmented` com `tone` (verde, âmbar, vermelho) e sempre com texto |
+| Nível/dificuldade | `Segmented` com `tone` (verde, âmbar, vermelho) e sempre com texto; os não selecionados ficam neutros e só a escolha tem cor cheia (a cor aparece de leve ao passar o mouse) |
 | Copiar | Botão com ícone que vira "ok" por 2 s |
 | Link que sai do app | Ícone de seta, `target="_blank"`, `noopener`, texto "(abre em outra aba)" para leitor de tela |
+
+## Fórmulas
+`RichText` (`src/components/math/`) é a única porta para texto de questão com fórmula. Sem `$` no texto não custa nada; com `$`, baixa o KaTeX uma vez. Fontes do KaTeX vêm do pacote (`katex/dist/fonts`), nunca de CDN.
+
+## Revisão e topo
+`ReviewNav` (barra fixa embaixo, só com a prova corrigida) destaca a questão com `data-flash`; com movimento reduzido o destaque é estático. `ScrollTopButton` fica fixo à direita e a revisão deixa 5rem livres para ele.
 
 ## Campos
 Campo preenchido tem fundo mais claro e uma barra de destaque à esquerda (`.input:not(:placeholder-shown)`), por isso todo campo precisa de `placeholder`.

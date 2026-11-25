@@ -62,5 +62,15 @@ describe("schema", () => {
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.warnings).toHaveLength(1);
   });
-});
 
+  it("rejeita fórmula com barra invertida não dobrada (\\f virou caractere de controle)", () => {
+    const bad = structuredClone(templateExam) as any;
+    bad.parts[0].questions[0].prompt = JSON.parse('{"p":"Calcule $\\frac{1}{2}$"}').p;
+    const r = validateExam(bad);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.errors[0]).toMatch(/barra invertida/);
+    const good = structuredClone(templateExam) as any;
+    good.parts[0].questions[0].prompt = JSON.parse('{"p":"Calcule $\\\\frac{1}{2}$"}').p;
+    expect(validateExam(good).ok).toBe(true);
+  });
+});

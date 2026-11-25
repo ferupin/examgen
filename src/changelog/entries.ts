@@ -23,6 +23,36 @@ export const kindOrder: ChangeKind[] = ["added", "changed", "fixed", "data", "in
 
 export const entries: ChangelogEntry[] = [
   {
+    version: "0.4.0",
+    date: "2026-11-25",
+    summary: "Fórmulas matemáticas e químicas, navegação pelas questões a rever, botão de voltar ao topo e criador com \"Sem material\".",
+    changes: {
+      added: [
+        "Fórmulas nas questões: escreva $x^2 + 3x = 10$ ou, em bloco, $$\\frac{a}{b}$$; química com $\\ce{H2O}$. Fontes e estilos vêm no próprio app, sem internet.",
+        "Depois de corrigir a prova, o botão \"Revisar questões\" leva, em ordem, às erradas, em branco ou com nota baixa, destacando cada uma por um instante.",
+        "Botão de voltar ao topo, que aparece quando o cabeçalho e o menu saem de vista.",
+        "Em Criar com IA, a opção \"Sem material\": a IA busca referências no nível da série e dos assuntos, e o pedido e os textos de apoio se adaptam a imagens, texto ou nenhum material.",
+        "Importar: botão \"Colar da área de transferência\", \"Limpar\" e contador de caracteres.",
+        "Ajuda no campo \"Número de partes\".",
+      ],
+      changed: [
+        "No campo Nível, as opções não selecionadas ficam apagadas e só a escolhida mostra a cor cheia.",
+        "Os exemplos ficam sempre fechados na tela inicial, mesmo com a biblioteca vazia.",
+        "A tela Importar ganhou dois passos numerados (arquivo ou texto) e um divisor \"ou\".",
+        "O aviso \"Salvo no navegador\" tem faixa própria no topo e não empilha sob outros avisos.",
+        "O simulado de Matemática do catálogo passou a usar fórmulas.",
+      ],
+      fixed: [
+        "Uma barra invertida de fórmula sem dobrar no JSON (\\frac virava caractere de controle) agora é recusada na importação, com mensagem explicando como corrigir.",
+      ],
+      internal: [
+        "KaTeX carregado sob demanda (só quando alguma questão tem fórmula); preços como \"R$ 5,00\" nunca são lidos como fórmula.",
+        "Fórmulas têm nome acessível em português para leitores de tela (aria-label).",
+        "Testes novos para fórmulas, revisão de questões, modo \"Sem material\" e validação de barra invertida.",
+      ],
+    },
+  },
+  {
     version: "0.3.0",
     date: "2026-11-24",
     summary: "Biblioteca focada nos seus bancos, catálogo de exemplos do 1º ao 9º ano e formulário mais claro.",

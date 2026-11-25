@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleAlert, CircleCheck, FileJson, Save, Upload } from "lucide-react";
+import { ClipboardPaste, CircleAlert, CircleCheck, Eraser, FileJson, Save, Upload } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { buildFixPrompt } from "@/core/prompt";
@@ -48,6 +48,14 @@ export function ImporterPage() {
     toast("info", t("toast.fileRead"));
   }
 
+  async function pasteClipboard() {
+    try {
+      analyze(await navigator.clipboard.readText());
+    } catch {
+      toast("error", t("importer.clipboardFail"));
+    }
+  }
+
   function save() {
     if (parsed.kind !== "ok") return;
     const ok = saveToLibrary(parsed.exam);
@@ -65,50 +73,84 @@ export function ImporterPage() {
         {t("importer.lead")} <Link href="/criar">{t("importer.leadLink")}</Link>
       </p>
 
-      <div
-        className={`rounded-2xl border-2 border-dashed p-6 text-center transition-colors ${
-          over ? "border-accent bg-accent-soft" : "border-line-strong bg-paper-2"
-        }`}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setOver(true);
-        }}
-        onDragLeave={() => setOver(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setOver(false);
-          void readFile(e.dataTransfer.files[0]);
-        }}
-      >
-        <FileJson size={32} aria-hidden="true" className="mx-auto mb-2 text-muted" />
-        <p className="mb-3">{t("importer.drop")}</p>
-        <button type="button" className="btn btn-primary" onClick={() => fileRef.current?.click()}>
-          <Upload size={18} aria-hidden="true" />
-          {t("importer.choose")}
-        </button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept=".json,application/json"
-          className="sr-only"
-          aria-label={t("importer.chooseLabel")}
-          onChange={(e) => {
-            void readFile(e.target.files?.[0]);
-            e.target.value = "";
+      <section className="card mt-5" aria-labelledby="imp-file">
+        <h2 id="imp-file" className="mb-3 flex items-center gap-2.5 text-base font-bold">
+          <span className="step-dot" aria-hidden="true">1</span>
+          {t("importer.optionFile")}
+        </h2>
+        <div
+          className={`rounded-xl border-2 border-dashed p-6 text-center transition-colors ${
+            over ? "border-accent bg-accent-soft" : "border-line-strong bg-paper"
+          }`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setOver(true);
           }}
-        />
+          onDragLeave={() => setOver(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setOver(false);
+            void readFile(e.dataTransfer.files[0]);
+          }}
+        >
+          <span className="mx-auto mb-3 grid size-14 place-items-center rounded-2xl bg-accent-soft text-accent">
+            <FileJson size={28} aria-hidden="true" />
+          </span>
+          <p className="font-semibold">{t("importer.drop")}</p>
+          <p className="mb-4 text-sm text-muted">{t("importer.dropHint")}</p>
+          <button type="button" className="btn btn-primary" onClick={() => fileRef.current?.click()}>
+            <Upload size={18} aria-hidden="true" />
+            {t("importer.choose")}
+          </button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".json,application/json"
+            className="sr-only"
+            aria-label={t("importer.chooseLabel")}
+            onChange={(e) => {
+              void readFile(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
+        </div>
+      </section>
+
+      <div className="or-divider" role="separator" aria-label={t("importer.or")}>
+        <span>{t("importer.or")}</span>
       </div>
 
-      <h2 className="section-title">{t("importer.pasteTitle")}</h2>
-      <textarea
-        className="input min-h-44 font-mono text-[13px] leading-normal"
-        aria-label={t("importer.pasteLabel")}
-        aria-invalid={parsed.kind === "error"}
-        placeholder='{ "schemaVersion": 1, "id": "…", … }'
-        value={text}
-        onChange={(e) => analyze(e.target.value)}
-        spellCheck={false}
-      />
+      <section className="card" aria-labelledby="imp-paste">
+        <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+          <h2 id="imp-paste" className="flex items-center gap-2.5 text-base font-bold">
+            <span className="step-dot" aria-hidden="true">2</span>
+            {t("importer.optionPaste")}
+          </h2>
+          <div className="flex gap-2">
+            <button type="button" className="btn btn-sm" onClick={() => void pasteClipboard()}>
+              <ClipboardPaste size={16} aria-hidden="true" />
+              {t("importer.pasteFromClipboard")}
+            </button>
+            {text && (
+              <button type="button" className="btn btn-sm" onClick={() => analyze("")}>
+                <Eraser size={16} aria-hidden="true" />
+                {t("importer.clear")}
+              </button>
+            )}
+          </div>
+        </div>
+        <p className="mb-2.5 text-sm text-muted">{t("importer.pasteHint")}</p>
+        <textarea
+          className="input min-h-44 font-mono text-[13px] leading-normal"
+          aria-label={t("importer.pasteLabel")}
+          aria-invalid={parsed.kind === "error"}
+          placeholder='{ "schemaVersion": 1, "id": "…", … }'
+          value={text}
+          onChange={(e) => analyze(e.target.value)}
+          spellCheck={false}
+        />
+        {text && <p className="mt-1.5 text-right text-xs text-muted">{t("importer.chars", { n: text.length })}</p>}
+      </section>
 
       {parsed.kind === "error" && (
         <div className="callout callout-bad" role="alert">

@@ -1,3 +1,4 @@
+import { ScrollTopButton } from "@/components/ui/ScrollTopButton";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "@fontsource/atkinson-hyperlegible/400.css";
@@ -25,8 +26,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <Header />
-          <main className="mx-auto max-w-[920px] px-0 pb-14 pt-1 sm:px-4">{children}</main>
+          <main id="conteudo" tabIndex={-1} className="mx-auto outline-none max-w-[920px] px-0 pb-14 pt-1 sm:px-4">{children}</main>
           <Footer />
+          <ScrollTopButton />
         </Providers>
       </body>
     </html>

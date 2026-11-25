@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, X } from "lucide-react";
+import { RichText } from "@/components/math/RichText";
 import { memo } from "react";
 import type { McQuestion } from "@/core/schema";
 import { t } from "@/i18n";
@@ -28,23 +29,23 @@ export const McCard = memo(function McCard({
   const setAnswer = storeFor(examId).getState().setAnswer;
 
   return (
-    <section className="question" aria-labelledby={`q-${q.id}`}>
+    <section className="question" data-qid={q.id} tabIndex={-1} aria-labelledby={`q-${q.id}`}>
       <QuestionHead number={number} title={q.title} kind="auto" />
       {q.context && (
         <p className="my-1.5 mb-2.5 rounded border-l-[3px] border-line-strong bg-paper-2 px-3.5 py-2.5 text-base">
-          {q.context}
+          <RichText text={q.context} />
         </p>
       )}
       {q.table && <QuestionTable table={q.table} />}
       <p className="mb-3 mt-2 font-semibold" id={`q-${q.id}`}>
-        {q.prompt}
+        <RichText text={q.prompt} />
       </p>
       {q.statements && (
         <div className="mb-3 ml-1 mt-1.5 grid gap-1">
           {q.statements.map((s, i) => (
             <div key={i} className="flex gap-2">
               <span className="min-w-7 font-bold">{ROMAN[i] ?? i + 1}.</span>
-              <span>{s}</span>
+              <span><RichText text={s} /></span>
             </div>
           ))}
         </div>
@@ -76,7 +77,7 @@ export const McCard = memo(function McCard({
               <span className="option-letter" aria-hidden="true">
                 {o.id.toUpperCase()}
               </span>
-              <span className="min-w-0 flex-1">{o.text}</span>
+              <span className="min-w-0 flex-1"><RichText text={o.text} /></span>
               {isCorrect && (
                 <span className="ml-auto inline-flex items-center gap-1 whitespace-nowrap text-[13px] font-bold">
                   <Check size={15} aria-hidden="true" />
@@ -102,7 +103,7 @@ export const McCard = memo(function McCard({
                 ? t("question.rightExplain")
                 : t("question.explain")}
           </strong>
-          {q.explanation}
+          <RichText text={q.explanation} />
         </div>
       )}
     </section>

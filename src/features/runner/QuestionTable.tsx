@@ -1,4 +1,5 @@
 import type { McQuestion } from "@/core/schema";
+import { RichText } from "@/components/math/RichText";
 
 /** Tabela de dados de uma questão. Rola na horizontal dentro da própria caixa, nunca a página. */
 export function QuestionTable({ table }: { table: NonNullable<McQuestion["table"]> }) {
@@ -14,7 +15,7 @@ export function QuestionTable({ table }: { table: NonNullable<McQuestion["table"
             <tr>
               {table.headers.map((h, i) => (
                 <th key={i} scope="col" className="border border-line-strong bg-paper-2 px-2.5 py-2 text-left align-top">
-                  {h}
+                  <RichText text={h} />
                 </th>
               ))}
             </tr>
@@ -25,7 +26,7 @@ export function QuestionTable({ table }: { table: NonNullable<McQuestion["table"
             <tr key={i}>
               {r.map((c, j) => (
                 <td key={j} className="border border-line-strong px-2.5 py-2 text-left align-top">
-                  {c}
+                  <RichText text={c} />
                 </td>
               ))}
             </tr>

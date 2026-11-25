@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { findBrokenBackslash } from "./math";
 
 /**
  * Formato JSON v1 de um simulado ("banco de questões").
@@ -233,6 +234,8 @@ export function validateExam(raw: unknown): ParseResult {
   const parsed = ExamSchema.safeParse(raw);
   if (!parsed.success) return { ok: false, errors: formatIssues(parsed.error) };
   const exam = parsed.data;
+  const broken = brokenBackslashes(exam);
+  if (broken.length > 0) return { ok: false, errors: broken };
   const warnings: string[] = [];
   exam.parts.forEach((p, pi) =>
     p.questions.forEach((q, qi) => {
@@ -245,6 +248,24 @@ export function validateExam(raw: unknown): ParseResult {
   );
   warnings.push(...balanceWarnings(exam));
   return { ok: true, exam, warnings };
+}
+
+/** Fórmula com "\\frac" sem dobrar a barra vira caractere de controle no JSON. */
+function brokenBackslashes(node: unknown, path = "exame", out: string[] = []): string[] {
+  if (out.length >= 10) return out;
+  if (typeof node === "string") {
+    const bad = findBrokenBackslash(node);
+    if (bad) {
+      out.push(
+        `${path}: há um caractere de controle perto de “${bad}”. Provável barra invertida de fórmula sem dobrar: em JSON, escreva \\\\frac em vez de \\frac (vale para \\times, \\theta, \\beta, \\rightarrow…).`,
+      );
+    }
+  } else if (Array.isArray(node)) {
+    node.forEach((v, i) => brokenBackslashes(v, `${path}[${i + 1}]`, out));
+  } else if (node && typeof node === "object") {
+    for (const [k, v] of Object.entries(node)) brokenBackslashes(v, `${path} › ${k}`, out);
+  }
+  return out;
 }
 
 /** Bancos feitos por IA costumam concentrar o gabarito em "A" e deixar a correta mais longa. */

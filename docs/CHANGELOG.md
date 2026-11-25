@@ -3,6 +3,31 @@
 Também aparece no app, em `/versoes`. A fonte dos dados é `src/changelog/entries.ts`; um teste confere que as duas listas batem.
 Versões seguem o padrão X.Y.Z: função nova aumenta o Y, correção aumenta o Z, quebra de compatibilidade aumenta o X.
 
+## 0.4.0 (2026-11-25)
+
+Fórmulas matemáticas e químicas, navegação pelas questões a rever, botão de voltar ao topo e criador com "Sem material".
+
+**Novidades**
+- Fórmulas nas questões: `$x^2 + 3x = 10$`, em bloco `$$\frac{a}{b}$$`, química `$\ce{H2O}$`. Fontes e estilos vêm no próprio app, sem internet.
+- Depois de corrigir, "Revisar questões" leva às erradas, em branco ou com nota baixa, em ordem, com destaque temporário.
+- Botão de voltar ao topo quando o cabeçalho e o menu saem de vista.
+- Criar com IA: opção "Sem material" (a IA busca referências no nível da série e dos assuntos); pedido e textos de apoio se adaptam a imagens, texto ou nenhum material.
+- Importar: "Colar da área de transferência", "Limpar" e contador de caracteres.
+- Ajuda no campo "Número de partes".
+
+**Mudanças**
+- Nível: opções não selecionadas ficam apagadas; só a escolhida tem a cor cheia.
+- Exemplos sempre fechados na tela inicial.
+- Importar com dois passos e divisor "ou".
+- "Salvo no navegador" em faixa própria no topo.
+- Matemática do catálogo usa fórmulas.
+
+**Correções**
+- Barra invertida de fórmula sem dobrar no JSON (`\frac` virava caractere de controle) agora é recusada com explicação.
+
+**Por dentro**
+- KaTeX carregado sob demanda; "R$ 5,00" nunca vira fórmula; fórmulas com `aria-label` em português; testes novos.
+
 ## 0.3.0 (2026-11-24)
 
 Biblioteca focada nos seus bancos, catálogo de exemplos do 1º ao 9º ano e formulário mais claro.

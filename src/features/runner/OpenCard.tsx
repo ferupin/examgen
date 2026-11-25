@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import { RichText } from "@/components/math/RichText";
 import type { OpenQuestion } from "@/core/schema";
 import { isAnswered } from "@/core/score";
 import { t } from "@/i18n";
@@ -32,16 +33,16 @@ export const OpenCard = memo(function OpenCard({
   const points = Array.from({ length: q.maxPoints + 1 }, (_, i) => i);
 
   return (
-    <section className="question" aria-labelledby={`q-${q.id}`}>
+    <section className="question" data-qid={q.id} tabIndex={-1} aria-labelledby={`q-${q.id}`}>
       <QuestionHead number={number} title={q.title} kind="assisted" />
       {q.context && (
         <p className="my-1.5 mb-2.5 rounded border-l-[3px] border-line-strong bg-paper-2 px-3.5 py-2.5 text-base">
-          {q.context}
+          <RichText text={q.context} />
         </p>
       )}
       {q.table && <QuestionTable table={q.table} />}
       <p className="mb-3 mt-2 font-semibold" id={`q-${q.id}`}>
-        {q.prompt}
+        <RichText text={q.prompt} />
       </p>
       <textarea
         className="input"
@@ -57,13 +58,13 @@ export const OpenCard = memo(function OpenCard({
         <>
           <div className="mt-3 rounded-lg border border-dashed border-line-strong bg-paper-2 px-3.5 py-3 text-[15px] print:hidden">
             <h4 className="text-sm font-bold text-muted">{t("question.expected")}</h4>
-            <div>{q.expectedAnswer}</div>
+            <div><RichText text={q.expectedAnswer} /></div>
             {q.keyConcepts.length > 0 && (
               <>
                 <h4 className="mt-2 text-sm font-bold text-muted">{t("question.concepts")}</h4>
                 <ul className="list-disc pl-5">
                   {q.keyConcepts.map((c, i) => (
-                    <li key={i}>{c}</li>
+                    <li key={i}><RichText text={c} /></li>
                   ))}
                 </ul>
               </>
@@ -71,7 +72,7 @@ export const OpenCard = memo(function OpenCard({
             <h4 className="mt-2 text-sm font-bold text-muted">{t("question.criteria")}</h4>
             <ul className="list-disc pl-5">
               {q.criteria.map((c, i) => (
-                <li key={i}>{c}</li>
+                <li key={i}><RichText text={c} /></li>
               ))}
             </ul>
           </div>

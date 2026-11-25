@@ -41,8 +41,6 @@ export function LibraryPage() {
   const [status, setStatus] = useState<Record<string, ExamStatus>>({});
   const [ready, setReady] = useState(false);
   const [examplesOpen, setExamplesOpen] = useState(false);
-  // Se a pessoa já abriu ou fechou o painel, não mexemos mais nele.
-  const touched = useRef(false);
   const confirm = useConfirm();
   const toast = useToast();
 
@@ -51,8 +49,6 @@ export function LibraryPage() {
     setMine(lib);
     setStatus(readStatus([...lib, ...exampleExams]));
     setReady(true);
-    // Biblioteca vazia: abre os exemplos uma vez, para a tela não ficar sem nada.
-    if (lib.length === 0 && !touched.current) setExamplesOpen(true);
   }, []);
   useEffect(refresh, [refresh]);
 
@@ -72,10 +68,7 @@ export function LibraryPage() {
     [confirm, toast, refresh],
   );
 
-  const toggleExamples = useCallback((open: boolean) => {
-    touched.current = true;
-    setExamplesOpen(open);
-  }, []);
+  const toggleExamples = useCallback((open: boolean) => setExamplesOpen(open), []);
 
   return (
     <div className="sheet">
