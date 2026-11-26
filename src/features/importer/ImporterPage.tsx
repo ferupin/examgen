@@ -10,6 +10,7 @@ import { t } from "@/i18n";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { useToast } from "@/components/ui/ToastProvider";
 import { saveToLibrary } from "@/storage/library";
+import { ExamPreview } from "./ExamPreview";
 
 type Parsed =
   | { kind: "none" }
@@ -198,6 +199,7 @@ export function ImporterPage() {
               ))}
             </ul>
           )}
+          <ExamPreview exam={parsed.exam} />
           <div className="mt-3 flex flex-wrap items-center gap-2.5">
             <button type="button" className="btn btn-primary" onClick={save}>
               <Save size={18} aria-hidden="true" />

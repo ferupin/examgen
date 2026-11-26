@@ -1,6 +1,6 @@
 "use client";
 
-import { FileUp, Sparkles } from "lucide-react";
+import { FileUp, HardDriveDownload, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { brand } from "@/config";
@@ -11,6 +11,7 @@ import { t } from "@/i18n";
 import { useConfirm } from "@/components/ui/ConfirmProvider";
 import { useToast } from "@/components/ui/ToastProvider";
 import { loadAttempt, loadHistory } from "@/storage/attempts";
+import { loadMeta, saveMeta, shouldRemind, snoozedUntil } from "@/storage/backup";
 import { downloadJson } from "@/storage/download";
 import { loadLibrary, removeFromLibrary } from "@/storage/library";
 import { ExamCard, type ExamStatus } from "./ExamCard";
@@ -41,13 +42,19 @@ export function LibraryPage() {
   const [status, setStatus] = useState<Record<string, ExamStatus>>({});
   const [ready, setReady] = useState(false);
   const [examplesOpen, setExamplesOpen] = useState(false);
+  const [remind, setRemind] = useState<"never" | "old" | null>(null);
   const confirm = useConfirm();
   const toast = useToast();
 
   const refresh = useCallback(() => {
     const lib = loadLibrary();
     setMine(lib);
-    setStatus(readStatus([...lib, ...exampleExams]));
+    const st = readStatus([...lib, ...exampleExams]);
+    setStatus(st);
+    // Só lembra de backup quando há o que perder: banco próprio ou resultado guardado.
+    const meta = loadMeta();
+    const hasData = lib.length > 0 || Object.values(st).some((x) => x.last);
+    setRemind(shouldRemind(meta, hasData) ? (meta.lastBackupAt ? "old" : "never") : null);
     setReady(true);
   }, []);
   useEffect(refresh, [refresh]);
@@ -76,6 +83,26 @@ export function LibraryPage() {
       <p className="lead">
         {brand.tagline} {t("library.lead")}
       </p>
+
+      {remind && (
+        <div className="callout flex flex-wrap items-center gap-x-4 gap-y-2" role="status" data-testid="backup-reminder">
+          <HardDriveDownload size={18} aria-hidden="true" className="flex-none text-accent" />
+          <span className="min-w-0 flex-1">{t(remind === "never" ? "reminder.never" : "reminder.old")}</span>
+          <Link className="btn btn-sm btn-primary" href="/dados">
+            {t("reminder.go")}
+          </Link>
+          <button
+            type="button"
+            className="btn btn-sm"
+            onClick={() => {
+              saveMeta({ ...loadMeta(), remindAfter: snoozedUntil() });
+              setRemind(null);
+            }}
+          >
+            {t("reminder.later")}
+          </button>
+        </div>
+      )}
 
       <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2">
         <h2 className="section-title !mb-0 !mt-0">{t("library.mine")}</h2>

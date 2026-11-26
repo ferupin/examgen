@@ -34,3 +34,21 @@ O KaTeX só é carregado quando a questão tem fórmula. Cada fórmula recebe um
 ## Dados no navegador
 
 Chaves do `localStorage` (prefixo em `src/config.ts`, hoje `examgen.v1`): `.library`, `.attempt.<id>`, `.history.<id>`, `.creator`, `.theme`. Tudo que é lido passa por Zod. Mudar o nome do produto **não** muda o prefixo.
+
+
+## Arquivo de backup
+Não é um banco de questões: é o conteúdo do navegador. Estrutura (`backupVersion: 1`):
+
+```json
+{
+  "app": "examgen",
+  "backupVersion": 1,
+  "appVersion": "0.5.0",
+  "exportedAt": "2026-11-25T21:00:00.000Z",
+  "library": [ /* bancos no formato acima */ ],
+  "attempts": { "<id do banco>": { /* tentativa */ } },
+  "history": { "<id do banco>": [ /* últimos 30 registros */ ] },
+  "creator": { /* formulário de Criar com IA */ }
+}
+```
+Itens inválidos são pulados na restauração e listados. Regras de mescla e desfazer: ADR 0006.

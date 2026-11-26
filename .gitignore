@@ -6,3 +6,7 @@ next-env.d.ts
 .vercel
 
 /out
+
+# testes E2E
+/test-results
+/playwright-report

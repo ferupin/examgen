@@ -23,6 +23,29 @@ export const kindOrder: ChangeKind[] = ["added", "changed", "fixed", "data", "in
 
 export const entries: ChangelogEntry[] = [
   {
+    version: "0.5.0",
+    date: "2026-11-25",
+    summary: "Backup e restauração, pré-visualização do gabarito antes de salvar, impressão em caderno e gabarito, e testes de ponta a ponta no repositório.",
+    changes: {
+      added: [
+        "Página Dados e backup (link no rodapé): baixe um arquivo com seus bancos, tentativas, histórico e o formulário de Criar com IA, e restaure depois.",
+        "Restaurar pode mesclar (acrescenta o que falta e nunca sobrescreve um banco diferente) ou substituir tudo, com confirmação. Se o armazenamento do navegador encher no meio, nada é alterado.",
+        "Lembrete discreto de backup na Biblioteca quando há bancos ou resultados e faz mais de 30 dias do último backup (\"Depois\" adia 7 dias).",
+        "Uso do armazenamento e pedido ao navegador para não apagar os dados.",
+        "Importar mostra, antes de salvar, os números do banco, o gabarito por letra e todas as questões com a alternativa correta marcada e a explicação.",
+        "Imprimir agora tem três saídas: Caderno de prova (sem gabarito, com campos de nome/data/turma e linhas para as discursivas), Gabarito (folha separada) e Prova corrigida.",
+      ],
+      changed: [
+        "No papel o fundo é branco e a tinta preta; cada questão fica inteira na mesma página.",
+      ],
+      internal: [
+        "Testes de ponta a ponta (Playwright + axe) agora fazem parte do repositório: `npm run e2e`. Cobrem navegação, criar, importar, prova, backup e impressão (gera PDF).",
+        "CI no GitHub: tipos, testes unitários, build e E2E a cada push e pull request.",
+        "ADR 0006 (backup) e 0007 (impressão); roteiro de teste com leitor de tela em docs/a11y-checklist.md.",
+      ],
+    },
+  },
+  {
     version: "0.4.1",
     date: "2026-11-25",
     summary: "Destaque das questões a rever mais suave, com fade-out.",

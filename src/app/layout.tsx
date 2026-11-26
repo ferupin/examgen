@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <Header />
-          <main id="conteudo" tabIndex={-1} className="mx-auto outline-none max-w-[920px] px-0 pb-14 pt-1 sm:px-4">{children}</main>
+          <main id="conteudo" tabIndex={-1} className="mx-auto outline-none max-w-[920px] px-0 pb-14 pt-1 sm:px-4 print:p-0">{children}</main>
           <Footer />
           <ScrollTopButton />
         </Providers>

@@ -1,4 +1,4 @@
-import { History } from "lucide-react";
+import { HardDriveDownload, History } from "lucide-react";
 import Link from "next/link";
 import { appVersion, brand } from "@/config";
 import { t } from "@/i18n";
@@ -19,6 +19,14 @@ export function Footer() {
         >
           <History size={12} aria-hidden="true" />
           {t("footer.versions")}
+        </Link>
+        <span aria-hidden="true">·</span>
+        <Link
+          href="/dados"
+          className="inline-flex items-center gap-1 text-muted underline-offset-2 hover:text-accent"
+        >
+          <HardDriveDownload size={12} aria-hidden="true" />
+          {t("footer.data")}
         </Link>
       </p>
     </footer>

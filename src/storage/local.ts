@@ -43,3 +43,17 @@ export function storageAvailable(): boolean {
     return false;
   }
 }
+
+/** Chaves do app (com o prefixo). Usado pelo backup para achar tentativas e históricos. */
+export function listKeys(): string[] {
+  try {
+    const out: string[] = [];
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const k = window.localStorage.key(i);
+      if (k && k.startsWith(`${P}.`)) out.push(k);
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}

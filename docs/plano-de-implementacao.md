@@ -21,7 +21,9 @@ Fase 4: PWA → Compartilhar por link; Identidade pode andar em paralelo desde j
 
 ---
 
-## Fase 1, versão 0.5.0: confiança e segurança dos dados
+## Fase 1, versão 0.5.0: confiança e segurança dos dados (**entregue**)
+
+> Desvios do plano: (1) na mescla, banco com o mesmo id e conteúdo diferente **fica como está** (bancos não têm data de edição) e a pessoa é avisada; (2) a pré-visualização é opcional (recolhida), sem travar o botão Salvar, para não atrapalhar quem importa seguido; (3) E2E foi feito direto em `@playwright/test` (TypeScript); (4) falta só a checklist com NVDA (item 1.5), que depende de você.
 
 ### 1.1 E2E no repositório e CI (P + P)
 - Mover os scripts para `e2e/*.py` ou, melhor, reescrever em `@playwright/test` (TypeScript), para rodar com `npm run e2e` e sem depender de Python.

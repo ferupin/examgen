@@ -59,3 +59,18 @@ docs/           este material
 4. Marque o item no `docs/ROADMAP.md`.
 5. Commit `chore(release): X.Y.Z` e `git tag -a vX.Y.Z`.
 O teste `entries.test.ts` confere versão, ordem, datas e o CHANGELOG.
+
+
+## Testes de ponta a ponta (E2E)
+Ficam em `e2e/` (Playwright + axe) e rodam contra o site **estático** já construído:
+
+```bash
+npm run build          # gera out/
+npx playwright install chromium   # uma vez só, baixa o navegador de teste
+npm run e2e            # sobe o servidor estático na porta 3111 e roda tudo
+```
+
+- Já tem Chrome instalado? Use `CHROME_PATH` e pule o `playwright install` (PowerShell: `$env:CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"; npm run e2e`).
+- Um arquivo só: `npx playwright test e2e/dados.spec.ts`. Passo a passo no navegador: `npx playwright test --headed`.
+- `npm run check` roda tipos e testes unitários. O CI (`.github/workflows/ci.yml`) roda os três mais o build em todo push e pull request.
+- O resultado da checagem de acessibilidade (axe) é automático. Para o que só uma pessoa percebe, use `docs/a11y-checklist.md`.

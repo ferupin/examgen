@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCheck, Printer, RotateCcw } from "lucide-react";
+import { CheckCheck, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { Exam } from "@/core/schema";
@@ -15,6 +15,8 @@ import { storageAvailable } from "@/storage/local";
 import { HistoryPanel } from "./HistoryPanel";
 import { McCard } from "./McCard";
 import { OpenCard } from "./OpenCard";
+import { PrintMenu } from "./PrintMenu";
+import { PrintView, type PrintMode } from "./PrintView";
 import { ProgressBar } from "./ProgressBar";
 import { ReviewNav } from "./ReviewNav";
 import { ResultPanel } from "./ResultPanel";
@@ -66,6 +68,19 @@ function Runner({ exam }: { exam: Exam }) {
   const toast = useToast();
   useAutosave(exam.id);
 
+  // Impressão: escolher o modo mostra a folha de papel certa, imprime e volta à tela normal.
+  const [printMode, setPrintMode] = useState<PrintMode | null>(null);
+  useEffect(() => {
+    if (!printMode) return;
+    const back = () => setPrintMode(null);
+    window.addEventListener("afterprint", back);
+    const id = window.setTimeout(() => window.print(), 50);
+    return () => {
+      window.clearTimeout(id);
+      window.removeEventListener("afterprint", back);
+    };
+  }, [printMode]);
+
   const questions = useMemo(() => allQuestions(exam), [exam]);
   const numberOf = useMemo(() => {
     const m = new Map<string, number>();
@@ -110,7 +125,9 @@ function Runner({ exam }: { exam: Exam }) {
   }
 
   return (
-    <article className="sheet">
+    <>
+    {printMode && <PrintView exam={exam} mode={printMode} />}
+    <article className={`sheet ${printMode ? "print:hidden" : ""}`}>
       <ProgressBar exam={exam} />
 
       <header className="mb-5 rounded border-2 border-ink px-4 py-4 sm:px-5">
@@ -167,13 +184,11 @@ function Runner({ exam }: { exam: Exam }) {
           <RotateCcw size={18} aria-hidden="true" />
           {t("runner.reset")}
         </button>
-        <button type="button" className="btn" onClick={() => window.print()}>
-          <Printer size={18} aria-hidden="true" />
-          {t("runner.print")}
-        </button>
+        <PrintMenu finished={locked} onPick={setPrintMode} onPickCorrected={() => window.print()} />
       </div>
 
       <HistoryPanel exam={exam} />
     </article>
+    </>
   );
 }

@@ -35,6 +35,11 @@ Correto/errado têm texto e ícone. Campo inválido tem borda vermelha **e** men
 ## Fórmulas
 `RichText` (`src/components/math/`) é a única porta para texto de questão com fórmula. Sem `$` no texto não custa nada; com `$`, baixa o KaTeX uma vez. Fontes do KaTeX vêm do pacote (`katex/dist/fonts`), nunca de CDN.
 
+## Dados, pré-visualização e impressão
+- `/dados`: três cartões (backup, restaurar, armazenamento). O resumo do arquivo escolhido aparece **antes** de qualquer mudança; "Substituir tudo" usa o botão `btn-danger` e o modal de confirmação.
+- `ExamPreview` (Importar): números, gabarito por letra e questões somente leitura com a alternativa correta em verde e o texto "Gabarito" (nunca só a cor).
+- `PrintMenu`: botão com `aria-haspopup="menu"`; fecha com Esc ou clique fora; "Prova corrigida" fica desabilitada até corrigir. `PrintView` só existe no papel.
+
 ## Revisão e topo
 `ReviewNav` (barra fixa embaixo, só com a prova corrigida) destaca a questão com `data-flash`; com movimento reduzido o destaque é estático. `ScrollTopButton` fica fixo à direita e a revisão deixa 5rem livres para ele.
 

@@ -14,10 +14,11 @@ O detalhamento técnico de cada item (arquivos, formato, testes, riscos, depend�
 - [x] 0.1.0 Importar, resolver e corrigir simulados (JSON v1)
 - [x] 0.2.0 Criar com IA por formulário, tema claro/escuro, Tailwind, estrutura em camadas, versões
 - [x] 0.3.0 Catálogo de exemplos do 1º ao 9º ano, biblioteca com exemplos sob demanda, formulário refinado
+- [x] 0.5.0 Backup e restauração, pré-visualização, impressão em três saídas, E2E e CI no repositório
 - [x] 0.4.1 Destaque de revisão mais suave, com fade-out
 - [x] 0.4.0 Fórmulas (KaTeX), navegador de questões a rever, botão de topo, criador com "Sem material", importar reformulado
 
-## Fase 1 (0.5.0): Confiança e segurança dos dados (próxima)
+## Fase 1 (0.5.0): Confiança e segurança dos dados (entregue, falta a revisão com leitor de tela)
 | Item | Custo | Necessidade | Importância |
 |---|---|---|---|
 | Backup e restauração de tudo (biblioteca + tentativas + criador) em um arquivo. Hoje limpar o navegador apaga tudo. | baixo | alta | alta |
@@ -26,7 +27,7 @@ O detalhamento técnico de cada item (arquivos, formato, testes, riscos, depend�
 | E2E dentro do repositório e CI no GitHub (tsc, testes, build) a cada push. Os scripts E2E hoje não estão no repositório. | baixo | alta | média |
 | Teste real com leitor de tela (NVDA/VoiceOver) nas telas principais e em fórmulas. Hoje só axe automático. | baixo | média | alta |
 
-## Fase 2 (0.6.0): Ciclo de aprender
+## Fase 2 (0.6.0): Ciclo de aprender (próxima)
 | Item | Custo | Necessidade | Importância |
 |---|---|---|---|
 | "Refazer só as que errei": nova tentativa com as questões de `reviewTargets`. Reaproveita o que existe. | baixo | média | alta |

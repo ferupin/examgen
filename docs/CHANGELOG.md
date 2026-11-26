@@ -3,6 +3,23 @@
 Também aparece no app, em `/versoes`. A fonte dos dados é `src/changelog/entries.ts`; um teste confere que as duas listas batem.
 Versões seguem o padrão X.Y.Z: função nova aumenta o Y, correção aumenta o Z, quebra de compatibilidade aumenta o X.
 
+## 0.5.0 (2026-11-25)
+
+Backup e restauração, pré-visualização do gabarito antes de salvar, impressão em caderno e gabarito, e testes de ponta a ponta no repositório.
+
+**Novidades**
+- Página **Dados e backup** (rodapé): baixar e restaurar um arquivo com bancos, tentativas, histórico e o formulário do criador. Restaurar pode **mesclar** (nunca sobrescreve um banco diferente) ou **substituir tudo** (com confirmação). Se o armazenamento encher no meio, nada é alterado.
+- Lembrete discreto de backup na Biblioteca (mais de 30 dias ou nunca feito; "Depois" adia 7 dias).
+- Uso do armazenamento e pedido de armazenamento persistente.
+- **Importar** mostra, antes de salvar, números do banco, gabarito por letra e as questões com a alternativa correta e a explicação.
+- **Imprimir** com três saídas: Caderno de prova, Gabarito e Prova corrigida.
+
+**Mudanças**
+- No papel: fundo branco, tinta preta e questões inteiras na mesma página.
+
+**Por dentro**
+- E2E (Playwright + axe) no repositório (`npm run e2e`), gerando PDF na impressão; CI no GitHub; ADR 0006 e 0007; `docs/a11y-checklist.md`.
+
 ## 0.4.1 (2026-11-25)
 
 Destaque das questões a rever mais suave, com fade-out.
